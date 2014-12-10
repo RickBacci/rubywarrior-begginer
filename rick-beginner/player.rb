@@ -35,12 +35,18 @@ class Player
 
     def wizard?
       @intel[1] == 'Wizard'
-      #@intel.include?('Wizard')
     end
 
     def captive?
       @intel[1] == 'Captive'
-      #@intel.include?('Captive')
+    end
+
+    def archer?
+      @intel[1] == 'Archer'
+    end
+
+    def wall?
+      @intel[1] == 'wall'
     end
 
     def trapped?
@@ -61,17 +67,27 @@ class Player
           end
         else
           p 'walk while under attack and not severely_wounded'
-          warrior.walk!
+          if wizard?
+            warrior.shoot!
+          else
+            warrior.walk!
+          end
         end
-      else # not under attack
+      else # warrior not under attack
         if wounded?
-          warrior.rest!
+          if @intel.include?('Wizard') || archer?
+            warrior.shoot!
+          else
+            warrior.rest!
+          end
         else
           if captive?
             p 'not under attack - see captive 2 spaces away'
             warrior.walk!
+          # elsif wall?
+          #   warrior.pivot!
           else
-            if @intel.include?('Wizard')
+            if wizard? || archer?
               warrior.shoot!
             else
               warrior.walk!
@@ -83,8 +99,10 @@ class Player
     	warrior.rescue!
     elsif warrior.feel.wall?
       warrior.pivot!
+    elsif warrior.feel.stairs?
+      warrior.walk!
     else
-      p 'What do you feel?'
+      warrior.attack! if warrior.feel.enemy?
     end
 
   	@health = warrior.health
