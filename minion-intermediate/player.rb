@@ -68,6 +68,7 @@ class Player
   end
 
   def rescue_closest_captive
+  	#@warrior.attack!(closest_captive)
   	@warrior.rescue!(closest_captive)
   end
 
@@ -95,7 +96,7 @@ class Player
   		if outnumbered?
   			bind_closest_enemy
   		else
-  		  attack_closest_enemy
+  		  attack_closest_enemy # add logic attack bound sludges
   		end
   	elsif severely_wounded?
   		stop_to_rest
