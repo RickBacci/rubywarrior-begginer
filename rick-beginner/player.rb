@@ -97,7 +97,6 @@ class Player
       @intel_ahead[0] == 'nothing' && @intel_ahead[1] == 'wall'
     end
 
-    p warrior.send(:feel)
     p warrior.feel.stairs?
     p warrior.look[1].stairs?
 
