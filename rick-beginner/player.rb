@@ -167,7 +167,8 @@ class Player
     	warrior.rescue!
     elsif warrior.feel(:backward).captive?
       warrior.rescue!(:backward)
-    #elsif warrior.feel.wall?
+    elsif warrior.feel.wall?
+      warrior.pivot!
     elsif can_see_wall
       warrior.pivot!
     elsif warrior.feel.enemy?
