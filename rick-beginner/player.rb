@@ -15,7 +15,7 @@ class Player
     end
 
     def severely_wounded?
-      @warrior.health <= 10
+      @warrior.health <= 9
     end
 
     def retreat!
@@ -49,7 +49,13 @@ class Player
     # p "wizards behind" if @intel_behind.include?('Wizard')
     # p "Archer behind" if @intel_behind.include?('Archer')
     # p "Captive behind" if @intel_behind.include?('Captive')
+    def sludge_ahead?
+      @intel_ahead[1] == 'Sludge' || @intel_ahead[2] == 'Sludge'
+    end
 
+    def thick_sludge_ahead?
+      @intel_ahead[1] == 'Thick Sludge' || @intel_ahead[2] == 'Thick Sludge'
+    end
 
     def wizard_ahead?
       @intel_ahead[1] == 'Wizard' || @intel_ahead[2] == 'Wizard'
@@ -87,6 +93,12 @@ class Player
       @warrior.feel(:backward).wall?
     end
 
+    def can_see_wall
+      @intel_ahead[0] == 'nothing' && @intel_ahead[1] == 'wall'
+    end
+
+
+    p warrior.feel.stairs?
 
   	if warrior.feel.empty?
 
@@ -101,8 +113,10 @@ class Player
           end
         else
           p 'walk while under attack and not severely_wounded'
-          if wizard_ahead? 
+          if wizard_ahead? || archer_ahead?
             warrior.shoot!
+          elsif wizard_behind? || archer_behind?
+            warrior.shoot!(:backward)
           elsif warrior.feel.enemy?
             warrior.attack!
           else
@@ -111,7 +125,7 @@ class Player
         end
       else # warrior not under attack
         if wounded?
-          if @intel_ahead.include?('Wizard') || archer_ahead?
+          if @intel_ahead.include?('Wizard') || archer_ahead? || sludge_ahead?
             warrior.shoot!
           else
             warrior.rest!
@@ -131,8 +145,18 @@ class Player
           else
             if wizard_ahead? || archer_ahead?
               warrior.shoot!
+            elsif wizard_behind? || archer_behind?
+              warrior.shoot!(:backward)
+            elsif sludge_ahead? || thick_sludge_ahead?
+              warrior.shoot!
             elsif warrior.feel.enemy?
               warrior.attack!
+            elsif can_see_wall
+              if warrior.feel.stairs?
+                warrior.walk!
+              else
+                warrior.pivot!
+              end
             else
               warrior.walk!
             end 
@@ -143,7 +167,8 @@ class Player
     	warrior.rescue!
     elsif warrior.feel(:backward).captive?
       warrior.rescue!(:backward)
-    elsif warrior.feel.wall?
+    #elsif warrior.feel.wall?
+    elsif can_see_wall
       warrior.pivot!
     elsif warrior.feel.enemy?
       p 'close quarters fighting'
