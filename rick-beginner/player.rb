@@ -11,11 +11,11 @@ class Player
     # end
     
     def wounded?
-      @warrior.health < 14 
+      @warrior.health < 13 
     end
 
     def severely_wounded?
-      @warrior.health <= 6
+      @warrior.health < 2
     end
 
     def retreat!
@@ -97,7 +97,7 @@ class Player
       @intel_ahead[0] == 'nothing' && @intel_ahead[1] == 'wall'
     end
 
-
+    p warrior.send(:feel)
     p warrior.feel.stairs?
     p warrior.look[1].stairs?
 
@@ -129,7 +129,7 @@ class Player
           if @intel_ahead.include?('Wizard') || archer_ahead? || sludge_ahead?
             warrior.shoot!
           else
-            if warrior.look[1].stairs?
+            if warrior.look[1].stairs? || warrior.look[2].stairs?
               warrior.walk!
             elsif warrior.feel.stairs?
               warrior.walk!
@@ -154,8 +154,8 @@ class Player
               warrior.shoot!
             elsif wizard_behind? || archer_behind?
               warrior.shoot!(:backward)
-            elsif thick_sludge_ahead? #|| sludge_ahead?
-              warrior.shoot!
+            elsif thick_sludge_ahead?
+              warrior.walk!
             elsif warrior.feel.enemy?
               warrior.attack!
             elsif can_see_wall
