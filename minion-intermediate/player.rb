@@ -4,7 +4,10 @@ class Player
 	# change enemies are near to return an array of enemy
 	# directions. If there are more than 1 enemy then he
 	# needs to bind some to survive.
-
+  def gather_intel
+  	@enemy_locations = enemies_are_near?
+  	@captive_locations = captives_are_near?
+  end
 	def possible_directions
 		[:forward, :backward, :left, :right]
 	end
@@ -31,16 +34,16 @@ class Player
   	captive_locations
   end
 
-  def fully_recovered?(warrior)
-  	warrior.health == 20
+  def fully_recovered?
+  	@warrior.health == 20
   end
 
   def severely_wounded?
   	@warrior.health < 10
   end
 
-  def stop_to_rest(warrior)
-  	warrior.rest!
+  def stop_to_rest
+  	@warrior.rest!
   end
 
   def number_of_enemies
@@ -56,35 +59,50 @@ class Player
   	@captive_locations[0]
   end
 
+  def no_enemies_found
+  	@enemy_locations.nil?
+  end
+
+  def bind_closest_enemy
+  	@warrior.bind!(closest_enemy)
+  end
+
+  def rescue_closest_captive
+  	@warrior.rescue!(closest_captive)
+  end
+
+  def outnumbered?
+  	number_of_enemies > 1
+  end
+
+  def attack_closest_enemy
+		@warrior.attack!(closest_enemy)
+  end
+
+  def walk_towards_stairs
+  	towards_stairs = @warrior.direction_of_stairs
+  	@warrior.walk!(towards_stairs)
+  end
+
   def play_turn(warrior)
   	@warrior = warrior
-  	towards_stairs = warrior.direction_of_stairs
 
-  	enemy_locations = enemies_are_near?
-  	captive_locations = captives_are_near?
-
-  	@captive_locations = captive_locations
-  	@enemy_locations = enemy_locations
-
-  	#severe_wounds = severely_wounded?(warrior)
-
+  	gather_intel
+  	
 
   	
-  	#p enemy_locations
   	if enemies_are_near?
-  		if number_of_enemies > 1
-  			warrior.bind!(closest_enemy)
+  		if outnumbered?
+  			bind_closest_enemy
   		else
-  		  warrior.attack!(closest_enemy) unless enemy_locations.nil?
+  		  attack_closest_enemy
   		end
   	elsif severely_wounded?
-  		stop_to_rest(warrior)
-  	# elsif !fully_recovered?(warrior)
-  	# 	stop_to_rest(warrior)
+  		stop_to_rest
   	elsif captives_are_near?
-  		warrior.rescue!(closest_captive)
+  		rescue_closest_captive
   	else
-  	  warrior.walk!(towards_stairs)
+  	  walk_towards_stairs
   	end
   end
 end
