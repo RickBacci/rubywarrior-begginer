@@ -14,6 +14,7 @@ class Player
     gather_intel
     p listen_for_intel
     p captives_in_room?
+    p next_enemy?
 
   	
   	if enemies_are_near?
@@ -26,11 +27,12 @@ class Player
   		    attack_closest_enemy # add logic to attack bound sludges
         end
   		end
-  	elsif !fully_recovered?
+  	elsif hit_points_needed?#!fully_recovered?
       if room_clear?
         walk_towards_stairs
       else
-        stop_to_rest
+        #stop_to_rest
+        recover_from_battle
       end
   	elsif captives_are_near?
   		rescue_closest_captive

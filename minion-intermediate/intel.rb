@@ -41,5 +41,16 @@ def room_clear?
   listen_for_intel.empty?
 end
 
+def next_enemy?
+  squares = #[]
+    @warrior.listen.each do |square|
+      return square.to_s unless square.to_s == 'Captive'
+      #squares << square.to_s
+      #p @warrior.direction_of(square)
+      #p "Move #{ @warrior.direction_of(square) } to find a #{square.to_s}"
+    end
+  squares
+end
+
 
 
