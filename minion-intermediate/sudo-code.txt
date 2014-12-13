@@ -1,0 +1,12 @@
+
+change enemies are near to return an array of enemy
+directions. If there are more than 1 enemy then he
+needs to bind some to survive.
+
+
+Level 4
+
+Warrior needs to look around the room to determine what needs to be done. Captives need to be located and rescued. Enemies need to be killed.
+
+Stronger enemies should be bound if warrior steps near 2 enemies at the same time.
+
