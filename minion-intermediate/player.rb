@@ -8,11 +8,11 @@ class Player
 
   def play_turn(warrior)
   	@warrior = warrior
+    @path_traveled ||= []
+
 
     gather_intel
     p listen_for_intel
-		
-
     p captives_in_room?
 
   	
@@ -20,16 +20,27 @@ class Player
   		if outnumbered?
   			bind_closest_enemy
   		else
-  		  attack_closest_enemy # add logic to attack bound sludges
+        if severely_wounded?
+          retreat_to_safety
+        else
+  		    attack_closest_enemy # add logic to attack bound sludges
+        end
   		end
-  	elsif severely_wounded?
-  		stop_to_rest
+  	elsif !fully_recovered?
+      if room_clear?
+        walk_towards_stairs
+      else
+        stop_to_rest
+      end
   	elsif captives_are_near?
   		rescue_closest_captive
     elsif captives_in_room?
-      warrior.walk!(direction_to_captive)
+      walk_towards_captive
   	else
   	  walk_towards_stairs
   	end
   end
+      #system `clear`
+      print %x{clear}
+
 end

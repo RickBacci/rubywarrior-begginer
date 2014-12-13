@@ -20,3 +20,5 @@ def direction_to_captive
   direction
 end
 
+
+

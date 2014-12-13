@@ -4,7 +4,7 @@ def number_of_enemies
 end
 
 def closest_enemy
-  @enemy_locations[0]
+  @enemy_locations.first
 end
 
 def outnumbered?
@@ -12,7 +12,11 @@ def outnumbered?
 end
 
 def attack_closest_enemy
-  @warrior.attack!(closest_enemy)
+  if @bound_enemies.empty?
+    @warrior.attack!(closest_enemy)
+  else
+    @warrior.attack!(@bound_enemies.first)
+  end
 end
 
 def no_enemies_found
@@ -20,5 +24,6 @@ def no_enemies_found
 end
 
 def bind_closest_enemy
+  @bound_enemies << closest_enemy
   @warrior.bind!(closest_enemy)
 end

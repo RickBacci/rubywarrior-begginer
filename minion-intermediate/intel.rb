@@ -2,6 +2,7 @@ def gather_intel
   @enemy_locations = enemies_are_near?
   @captive_locations = captives_are_near?
   @everything_in_room = listen_for_intel
+  @bound_enemies ||= []
 end
 
 def listen_for_intel
@@ -34,6 +35,10 @@ def captives_are_near?
 
   return nil if captive_locations.empty?
   captive_locations
+end
+
+def room_clear?
+  listen_for_intel.empty?
 end
 
 
