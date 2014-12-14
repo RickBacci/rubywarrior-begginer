@@ -24,3 +24,5 @@ Rescue the ticking captive first...or boom!
 
 Attempt to bind enemies on way to rescue dude that is gonna die.
 
+fix number of enemies to reflect only enemies that are right next to warrior.
+

@@ -30,5 +30,9 @@ def rescue_captive
   @warrior.rescue!(direction_to_captive)
 end
 
+def found_a_captive
+  @warrior.feel(direction_to_captive).captive?
+end
+
 
 

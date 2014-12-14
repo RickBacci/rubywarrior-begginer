@@ -3,7 +3,14 @@ def number_of_enemies
   #@enemy_locations.size
   total = 0
   @warrior.listen.each do |square|
-    total += 1 if square.to_s == 'Sludge' || square.to_s == 'Thick Sludge'
+    next if square.to_s != 'Sludge'
+    next if square.to_s != 'Thick Sludge'
+
+    possible_directions.each do |direction|
+      if @warrior.feel(direction) == 'Sludge' || @warrior.feel(direction) == 'Thick Sludge'
+        total += 1
+      end
+    end
   end
   total
 end
@@ -22,8 +29,9 @@ end
 
 def attack_closest_enemy
   
-  if enemies_are_near?
-    @warrior.attack!(closest_enemy)
+  if next_to_warrior?(:enemy)
+    #@warrior.attack!(closest_enemy)
+    @warrior.attack!(next_to_warrior?(:enemy))
   elsif @bound_enemies.length >= 1
     @warrior.attack!(@bound_enemies.first)
   else

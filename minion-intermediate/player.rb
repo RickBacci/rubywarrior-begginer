@@ -15,7 +15,9 @@ class Player
    
     #p @path_traveled
     #p ticking_captives?
+    p number_of_enemies
     p next_enemy?
+    p next_to_warrior?(:enemy)
 
   	
   	if ticking_captives?

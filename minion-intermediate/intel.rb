@@ -1,8 +1,8 @@
 
 def listen_for_intel
-  @enemy_locations ||= []
-  @captive_locations ||= []
-  @everything_in_room ||= []
+  @enemy_locations = []
+  @captive_locations = []
+  @everything_in_room = []
 
   squares = []
   @warrior.listen.each do |square|
@@ -32,9 +32,10 @@ def next_to_warrior?(object)
     when :stairs
       return direction if @warrior.feel(direction).stairs?
     else
-      nil
+      p 'error'
     end
   end
+  nil
 end
 
 def room_clear?
@@ -48,9 +49,7 @@ def next_enemy?
   nil
 end
 
-def found_a_captive
-  @warrior.feel(direction_to_captive).captive?
-end
+
 
 # def enemies_are_near?
 #   enemy_locations = []
