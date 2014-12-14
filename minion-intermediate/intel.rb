@@ -1,6 +1,6 @@
 def gather_intel
   @enemy_locations = enemies_are_near?
-  @captive_locations = captives_are_near?
+  @captive_locations = captive_near?
   @everything_in_room = listen_for_intel
   @bound_enemies ||= []
 end
@@ -9,8 +9,6 @@ def listen_for_intel
   squares = []
     @warrior.listen.each do |square|
       squares << square.to_s
-      #p @warrior.direction_of(square)
-      #p "Move #{ @warrior.direction_of(square) } to find a #{square.to_s}"
     end
   squares
 end
@@ -26,15 +24,13 @@ def enemies_are_near?
   enemy_locations
 end
 
-def captives_are_near?
-  captive_locations = []
-
+def captive_near?
+  captive_direction = ''
     possible_directions.each do |direction|
-      captive_locations << direction if @warrior.feel(direction).captive?
+      captive_direction = direction if @warrior.feel(direction).captive?
     end
-
-  return nil if captive_locations.empty?
-  captive_locations
+  return nil if captive_direction == ''
+  captive_direction
 end
 
 def room_clear?
@@ -53,7 +49,7 @@ def next_enemy?
 end
 
 
-def found_a_ticking_captive
+def found_a_captive
   @warrior.feel(direction_to_captive).captive?
 end
 

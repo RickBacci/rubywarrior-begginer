@@ -17,7 +17,7 @@ class Player
 
   	
   	if ticking_captives?
-      if found_a_ticking_captive
+      if found_a_captive
         rescue_captive
   		else  
   		  walk_towards_ticking_captive
@@ -38,10 +38,12 @@ class Player
       else
         recover_from_battle
       end
-  	elsif captives_are_near?
-  		rescue_closest_captive
     elsif captives_in_room?
-      walk_towards_captive
+      if found_a_captive
+        rescue_captive
+      else
+        walk_towards_captive
+      end
     elsif room_clear?
       walk_towards_stairs
   	else
