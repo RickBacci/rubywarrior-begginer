@@ -47,5 +47,9 @@ def ticking_captives?
   bomb
 end
 
+def rescue_captive
+  @warrior.rescue!(direction_to_captive)
+end
+
 
 

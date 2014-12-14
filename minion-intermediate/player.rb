@@ -18,7 +18,7 @@ class Player
   	
   	if ticking_captives?
       if found_a_ticking_captive
-        @warrior.rescue!(direction_to_captive)
+        rescue_captive
   		else  
   		  walk_towards_ticking_captive
   		end
