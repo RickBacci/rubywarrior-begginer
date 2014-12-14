@@ -54,7 +54,7 @@ end
 
 
 def found_a_ticking_captive
-  @warrior.feel(direction_to_ticking_captive).captive?
+  @warrior.feel(direction_to_captive).captive?
 end
 
 

@@ -75,15 +75,15 @@ def walk_towards_captive
 end
 
 def walk_towards_ticking_captive
-  if @warrior.feel(direction_to_ticking_captive).stairs?
+  if @warrior.feel(direction_to_captive).stairs?
     @path_traveled << walk_around_stairs
     @warrior.walk!(walk_around_stairs)
-  elsif @warrior.feel(direction_to_ticking_captive).enemy?
+  elsif @warrior.feel(direction_to_captive).enemy?
     @path_traveled << walk_around_enemy
     @warrior.walk!(walk_around_enemy)
   else
-    @path_traveled << direction_to_ticking_captive
-    @warrior.walk!(direction_to_ticking_captive)
+    @path_traveled << direction_to_captive
+    @warrior.walk!(direction_to_captive)
   end
 end
 
