@@ -1,7 +1,16 @@
 def number_of_enemies
-  return 0 if @enemy_locations.nil?
-  @enemy_locations.size
+  #return 0 if @enemy_locations.nil?
+  #@enemy_locations.size
+  total = 0
+  @warrior.listen.each do |square|
+    total += 1 if square.to_s == 'Sludge' || square.to_s == 'Thick Sludge'
+  end
+  total
 end
+
+# def captives_in_room?
+#   listen_for_intel.include?('Captive')
+# end
 
 def closest_enemy
   @enemy_locations.first

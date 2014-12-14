@@ -9,11 +9,13 @@ class Player
   def play_turn(warrior)
   	@warrior = warrior
     @path_traveled ||= []
+    @bound_enemies ||= []
 
-    gather_intel
+    listen_for_intel
    
     #p @path_traveled
     #p ticking_captives?
+    p next_enemy?
 
   	
   	if ticking_captives?
@@ -22,7 +24,7 @@ class Player
   		else  
   		  walk_towards_ticking_captive
   		end
-    elsif enemies_are_near?
+    elsif next_to_warrior?(:enemy) #enemies_are_near?
       if outnumbered?
         bind_closest_enemy
       else
@@ -33,11 +35,7 @@ class Player
         end
       end
   	elsif hit_points_needed?
-      if room_clear?
-        walk_towards_stairs 
-      else
-        recover_from_battle
-      end
+      recover_from_battle
     elsif captives_in_room?
       if found_a_captive
         rescue_captive
