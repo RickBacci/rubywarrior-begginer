@@ -3,8 +3,14 @@ def closest_captive
 end
 
 def rescue_closest_captive
-  #@warrior.attack!(closest_captive)
-  @warrior.rescue!(closest_captive)
+  p 'stuck in here?'
+  if @bound_enemies.empty?
+    @warrior.rescue!(closest_captive) 
+  else
+    bound_enemy = @bound_enemies.shift
+    @warrior.attack!(bound_enemy)
+
+  end
 end
 
 def captives_in_room?

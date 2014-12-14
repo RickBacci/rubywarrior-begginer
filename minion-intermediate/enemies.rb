@@ -12,10 +12,13 @@ def outnumbered?
 end
 
 def attack_closest_enemy
-  if @bound_enemies.empty?
+  
+  if enemies_are_near?
     @warrior.attack!(closest_enemy)
-  else
+  elsif @bound_enemies.length >= 1
     @warrior.attack!(@bound_enemies.first)
+  else
+    p 'Why are you here?'
   end
 end
 
