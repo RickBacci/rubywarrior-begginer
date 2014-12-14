@@ -16,5 +16,11 @@ Stop walking in the stupid stairs!
 
 Walk_towards_stairs can only happen when the room is empty.
 
-If a captive exists, then the warrior needs to detour around the stairs.
+If a captive exists, then the warrior needs to detour around the stairs.git
+
+Level 6
+
+Rescue the ticking captive first...or boom! 
+
+Attempt to bind enemies on way to rescue dude that is gonna die.
 

@@ -53,4 +53,9 @@ def next_enemy?
 end
 
 
+def found_a_ticking_captive
+  @warrior.feel(direction_to_ticking_captive).captive?
+end
+
+
 

@@ -3,7 +3,6 @@ def closest_captive
 end
 
 def rescue_closest_captive
-  p 'stuck in here?'
   if @bound_enemies.empty?
     @warrior.rescue!(closest_captive) 
   else
@@ -20,10 +19,29 @@ end
 def direction_to_captive
   direction = ''
   @warrior.listen.each do |square|
-    #direction = square.to_s
-    direction = @warrior.direction_of(square) if square.to_s == 'Captive'
+    if square.to_s == 'Captive'
+      direction = @warrior.direction_of(square) 
+    end
   end
   direction
+end
+
+def direction_to_ticking_captive
+  direction = ''
+  @warrior.listen.each do |square|
+    if square.ticking? && square.to_s == 'Captive'
+      direction = @warrior.direction_of(square) 
+    end
+  end
+  direction
+end
+
+def ticking_captives?
+  bomb = false
+  @warrior.listen.each do |square|
+    bomb = true if square.ticking?
+  end
+  bomb
 end
 
 

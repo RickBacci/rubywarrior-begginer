@@ -37,7 +37,7 @@ def walk_around_stairs
 
     if @warrior.feel(direction).empty? && !@warrior.feel(direction).stairs?
       if @path_traveled.length > 1
-        new_direction = direction if direction != @path_traveled.last
+        new_direction = direction if direction != retrace_footsteps(@path_traveled.last)
       else
         new_direction = direction
       end
@@ -74,3 +74,31 @@ def walk_towards_captive
   end
 end
 
+def walk_towards_ticking_captive
+  if @warrior.feel(direction_to_ticking_captive).stairs?
+    @path_traveled << walk_around_stairs
+    @warrior.walk!(walk_around_stairs)
+  elsif @warrior.feel(direction_to_ticking_captive).enemy?
+    @path_traveled << walk_around_enemy
+    @warrior.walk!(walk_around_enemy)
+  else
+    @path_traveled << direction_to_ticking_captive
+    @warrior.walk!(direction_to_ticking_captive)
+  end
+end
+
+def walk_around_enemy
+  new_direction = nil
+  possible_directions.each do |direction|
+
+    if @warrior.feel(direction).empty?
+      if @path_traveled.length >= 1
+        new_direction = direction if direction != retrace_footsteps(@path_traveled.last)
+      else
+        new_direction = direction
+      end
+    end
+
+  end
+  new_direction
+end

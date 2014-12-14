@@ -10,28 +10,28 @@ class Player
   	@warrior = warrior
     @path_traveled ||= []
 
-
     gather_intel
-    # p listen_for_intel
-    # p captives_in_room?
-    # p next_enemy?
-    p @everything_in_room
-    #p direction_around_stairs
-    #p !@warrior.feel.stairs?
-    p "Is room clear? #{room_clear?}"
-    p "bound enemies #{@bound_enemies}"
+   
+    #p @path_traveled
+    #p ticking_captives?
 
   	
-  	if enemies_are_near?
-  		if outnumbered?
-  			bind_closest_enemy
-  		else
+  	if ticking_captives?
+      if found_a_ticking_captive
+        @warrior.rescue!(direction_to_ticking_captive)
+  		else  
+  		  walk_towards_ticking_captive
+  		end
+    elsif enemies_are_near?
+      if outnumbered?
+        bind_closest_enemy
+      else
         if severely_wounded?
           retreat_to_safety
         else
-  		    attack_closest_enemy
+          attack_closest_enemy
         end
-  		end
+      end
   	elsif hit_points_needed?
       if room_clear?
         walk_towards_stairs 
@@ -48,7 +48,5 @@ class Player
       walk_around_stairs
   	end
   end
-      #system `clear`
-      print %x{clear}
-
+  print %x{clear}
 end
