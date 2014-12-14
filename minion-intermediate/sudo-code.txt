@@ -10,3 +10,11 @@ Warrior needs to look around the room to determine what needs to be done. Captiv
 
 Stronger enemies should be bound if warrior steps near 2 enemies at the same time.
 
+Level 5
+
+Stop walking in the stupid stairs!
+
+Walk_towards_stairs can only happen when the room is empty.
+
+If a captive exists, then the warrior needs to detour around the stairs.
+
