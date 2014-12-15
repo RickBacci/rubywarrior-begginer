@@ -11,24 +11,22 @@ class Player
     @path_traveled ||= []
     @bound_enemies ||= []
 
-    p @path_traveled.empty?
-    p previous_location
+    #p @path_traveled.empty?
+    #p previous_location
 
-    
-
-    p listen_for_intel
+    # p listen_for_intel
    
-    p @enemy_locations.size
-    p number_of_enemies_next_to_warrior
-    p next_enemy?
-    p next_to_warrior?(:enemy)
+    # p @enemy_locations.size
+    # p number_of_enemies_next_to_warrior
+    # p next_enemy?
+    # p next_to_warrior?(:enemy)
 
   	
   	if ticking_captives?
       if found_a_captive
         rescue_captive
   		else  
-  		  walk_towards_ticking_captive
+  		  walk_towards_captive
   		end
     elsif next_to_warrior?(:enemy) #enemies_are_near?
       if outnumbered?
@@ -51,7 +49,7 @@ class Player
     elsif room_clear?
       walk_towards_stairs
   	else
-      walk_around_stairs
+      walk_around_object
   	end
   end
   print %x{clear}
