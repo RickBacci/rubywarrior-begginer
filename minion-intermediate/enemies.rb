@@ -50,3 +50,16 @@ end
 def enemies_in_room?
   @enemy_locations.first
 end
+
+def kill_bound_enemies
+  if found_a_bound_enemy
+    @warrior.attack!(@enemy_locations.first)
+    @bound_enemies.shift
+  else
+    @warrior.walk!(@enemy_locations.first)
+  end
+end
+
+def kill_remaining_enemies
+  @warrior.walk!(@enemy_locations.first)
+end
