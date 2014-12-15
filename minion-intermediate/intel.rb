@@ -2,7 +2,6 @@
 def listen_for_intel # finds everything in room
   @enemy_locations = []
   @captive_locations = []
-  @everything_in_room = []
 
 
   squares = []

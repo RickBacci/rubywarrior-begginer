@@ -25,33 +25,21 @@ def retreat_to_safety
   @warrior.walk!(direction_to_safety)
 end
 
+def towards_stairs
+  @warrior.direction_of_stairs
+end
 
 def walk_towards_stairs
-  towards_stairs = @warrior.direction_of_stairs
-  if @everything_in_room.empty?
-    p "everything should be empty!"
-    @path_traveled << towards_stairs
+  if room_clear?
     @warrior.walk!(towards_stairs)
+    @path_traveled << towards_stairs
   else
-    p 'in walk towards stairs room not empty'
-    new_direction = walk_around_stairs
-    @path_traveled << new_direction
+    new_direction = walk_around_object
     @warrior.walk!(new_direction)
+    @path_traveled << new_direction
   end
 end
 
-
-# def walk_towards_captive
-#   if @warrior.feel(direction_to_captive).stairs?
-#     @path_traveled << walk_around_object
-#     @warrior.walk!(walk_around_object)
-#   else
-#     @path_traveled << direction_to_captive
-#     @warrior.walk!(direction_to_captive)
-#   end
-# end
-
-#def walk_towards_ticking_captive
 def walk_towards_captive
   if @warrior.feel(direction_to_captive).stairs?
     @path_traveled << walk_around_object
@@ -74,13 +62,8 @@ def walk_around_object
   new_direction = nil
 
   possible_directions.each do |direction|
-    next if @warrior.feel(direction).stairs?
-    next if @warrior.feel(direction).enemy?
-    next if @warrior.feel(direction).captive?
-    next if @warrior.feel(direction).wall?
     next if direction == previous_location
-  
-    new_direction = direction
+    new_direction = direction if @warrior.feel(direction).empty?
   end
   new_direction
 end

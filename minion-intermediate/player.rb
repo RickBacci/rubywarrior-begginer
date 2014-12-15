@@ -11,41 +11,23 @@ class Player
     @path_traveled ||= []
     @bound_enemies ||= []
 
-    #p @path_traveled.empty?
-    #p previous_location
+    p listen_for_intel # do not comment out!
 
-    # p listen_for_intel
-   
-    # p @enemy_locations.size
-    # p number_of_enemies_next_to_warrior
-    # p next_enemy?
-    # p next_to_warrior?(:enemy)
-
-  	
+    
   	if ticking_captives?
-      if found_a_captive
-        rescue_captive
-  		else  
-  		  walk_towards_captive
-  		end
-    elsif next_to_warrior?(:enemy) #enemies_are_near?
+      free_captives
+    elsif next_to_warrior?(:enemy)
       if outnumbered?
         bind_closest_enemy
+      elsif severely_wounded?
+        retreat_to_safety
       else
-        if severely_wounded?
-          retreat_to_safety
-        else
-          attack_closest_enemy
-        end
+        attack_closest_enemy
       end
   	elsif hit_points_needed?
       recover_from_battle
     elsif captives_in_room?
-      if found_a_captive
-        rescue_captive
-      else
-        walk_towards_captive
-      end
+      free_captives
     elsif room_clear?
       walk_towards_stairs
   	else

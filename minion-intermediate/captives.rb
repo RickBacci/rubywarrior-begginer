@@ -34,5 +34,13 @@ def found_a_captive
   @warrior.feel(direction_to_captive).captive?
 end
 
+def free_captives
+  if found_a_captive
+    rescue_captive
+  else  
+    walk_towards_captive
+  end
+end
+
 
 
