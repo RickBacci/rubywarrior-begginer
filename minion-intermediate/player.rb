@@ -11,11 +11,15 @@ class Player
     @path_traveled ||= []
     @bound_enemies ||= []
 
-    listen_for_intel
+    p @path_traveled.empty?
+    p previous_location
+
+    
+
+    p listen_for_intel
    
-    #p @path_traveled
-    #p ticking_captives?
-    p number_of_enemies
+    p @enemy_locations.size
+    p number_of_enemies_next_to_warrior
     p next_enemy?
     p next_to_warrior?(:enemy)
 

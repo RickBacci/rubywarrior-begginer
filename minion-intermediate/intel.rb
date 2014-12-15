@@ -1,8 +1,9 @@
 
-def listen_for_intel
+def listen_for_intel # finds everything in room
   @enemy_locations = []
   @captive_locations = []
   @everything_in_room = []
+
 
   squares = []
   @warrior.listen.each do |square|
@@ -48,28 +49,3 @@ def next_enemy?
     end
   nil
 end
-
-
-
-# def enemies_are_near?
-#   enemy_locations = []
-
-#     possible_directions.each do |direction|
-#       enemy_locations << direction if @warrior.feel(direction).enemy?
-#     end
-
-#   return nil if enemy_locations.empty?
-#   enemy_locations
-# end
-
-# def captive_near?
-#   captive_direction = ''
-#     possible_directions.each do |direction|
-#       captive_direction = direction if @warrior.feel(direction).captive?
-#     end
-#   return nil if captive_direction == ''
-#   captive_direction
-# end
-
-
-
