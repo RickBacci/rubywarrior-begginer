@@ -18,6 +18,9 @@ class Player
      #  p "bound enemies: #{@bound_enemies}"
      # p @captive_locations
      #  p " enemy locations #{@enemy_locations}"
+     p number_of_enemies_ahead?
+     p multiple_enemies_ahead?
+     p ticking_captives?
 
     
   	if ticking_captives?
@@ -27,6 +30,8 @@ class Player
         bind_closest_enemy
       elsif severely_wounded?
         retreat_to_safety
+      elsif multiple_enemies_ahead?
+        kill_enemies
       else
         attack_closest_enemy
       end
@@ -37,7 +42,7 @@ class Player
     elsif bound_enemy?
       kill_bound_enemies
     elsif enemies_in_room?
-      kill_remaining_enemies
+      kill_enemies
     elsif room_clear?
       walk_towards(:stairs)
   	else

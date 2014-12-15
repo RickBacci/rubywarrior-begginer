@@ -60,6 +60,32 @@ def kill_bound_enemies
   end
 end
 
-def kill_remaining_enemies
-  @warrior.walk!(@enemy_locations.first)
+def kill_enemies
+
+  if multiple_enemies_ahead?
+    @warrior.detonate!
+  else
+    @warrior.walk!(@enemy_locations.first)
+  end
+end
+
+def number_of_enemies_ahead?
+  enemies = 0
+  @warrior.look.each do |space|
+    enemies += 1 if space.enemy?
+  end
+  enemies
+end
+
+def multiple_enemies_ahead?
+  squares = []
+  @warrior.look.each do |square|
+    squares << square
+  end
+  squares.each do |square|
+    if squares[0].enemy? && squares[1].enemy?
+      return true
+    end
+  end
+  false
 end
