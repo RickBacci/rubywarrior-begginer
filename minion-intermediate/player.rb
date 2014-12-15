@@ -18,13 +18,17 @@ class Player
      #  p "bound enemies: #{@bound_enemies}"
      # p @captive_locations
      #  p " enemy locations #{@enemy_locations}"
-     p number_of_enemies_ahead?
+     ##p number_of_enemies_ahead?
      p multiple_enemies_ahead?
      p ticking_captives?
 
     
   	if ticking_captives?
-      free_captives
+      if path_to_captives_blocked?
+        bomb_enemies
+      else
+        free_captives
+      end
     elsif next_to_warrior?(:enemy)
       if outnumbered?
         bind_closest_enemy

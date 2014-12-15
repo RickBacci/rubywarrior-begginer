@@ -7,11 +7,11 @@ def outnumbered?
   @enemies_near_warrior > 1
 end
 
-def enemy
+def single_enemy?
   next_to_warrior?(:enemy)
 end
 
-def enemy?
+def single_enemy?
   next_to_warrior?(:enemy)
 end
 
@@ -61,21 +61,22 @@ def kill_bound_enemies
 end
 
 def kill_enemies
-
   if multiple_enemies_ahead?
-    @warrior.detonate!
+    bomb_enemies
+  elsif single_enemy?
+    attack_enemy
   else
     @warrior.walk!(@enemy_locations.first)
   end
 end
 
-def number_of_enemies_ahead?
-  enemies = 0
-  @warrior.look.each do |space|
-    enemies += 1 if space.enemy?
-  end
-  enemies
-end
+# def number_of_enemies_ahead?
+#   enemies = 0
+#   @warrior.look.each do |space|
+#     enemies += 1 if space.enemy?
+#   end
+#   enemies
+# end
 
 def multiple_enemies_ahead?
   squares = []
@@ -88,4 +89,12 @@ def multiple_enemies_ahead?
     end
   end
   false
+end
+
+def bomb_enemies
+  @warrior.detonate!
+end
+
+def attack_enemy
+  @warrior.attack!(enemy)
 end

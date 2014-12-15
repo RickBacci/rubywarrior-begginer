@@ -35,14 +35,16 @@ def found_a_captive
 end
 
 def free_captives
-  if multiple_enemies_ahead?
-    @warrior.detonate!
-  elsif found_a_captive
+  if found_a_captive
     rescue_captive
   else  
     walk_towards(:captive)
   end
 end
+
+def path_to_captives_blocked?
+  multiple_enemies_ahead? && trapped?
+end  
 
 
 
