@@ -13,6 +13,10 @@ class Player
 
     p listen_for_intel # do not comment out!
 
+    p @enemies_near_warrior
+    p @captive_locations
+    p @enemy_locations
+
     
   	if ticking_captives?
       free_captives

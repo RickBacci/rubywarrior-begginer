@@ -2,18 +2,24 @@
 def listen_for_intel # finds everything in room
   @enemy_locations = []
   @captive_locations = []
+  @enemies_near_warrior = 0
 
 
   squares = []
   @warrior.listen.each do |square|
+    direction = @warrior.direction_of(square)
+    enemy = @warrior.feel(direction).enemy?
+    
     case square.to_s
 
     when 'Captive'
-      @captive_locations << @warrior.direction_of(square)
+      @captive_locations << direction
     when 'Sludge'
-      @enemy_locations << @warrior.direction_of(square)
+      @enemy_locations << direction
+      @enemies_near_warrior += 1 if enemy
     when 'Thick Sludge'
-      @enemy_locations << @warrior.direction_of(square)
+      @enemy_locations << direction
+      @enemies_near_warrior += 1 if enemy
     else
       p 'in listen for intel'
     end
