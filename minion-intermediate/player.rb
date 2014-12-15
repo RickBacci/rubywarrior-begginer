@@ -29,9 +29,10 @@ class Player
     elsif captives_in_room?
       free_captives
     elsif room_clear?
-      walk_towards_stairs
+      walk_towards(:stairs)
   	else
-      walk_around_object
+      p 'Act casual'
+      #walk_around_object
   	end
   end
   print %x{clear}

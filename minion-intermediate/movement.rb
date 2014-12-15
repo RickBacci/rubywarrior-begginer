@@ -29,27 +29,30 @@ def towards_stairs
   @warrior.direction_of_stairs
 end
 
-def walk_towards_stairs
-  if room_clear?
-    @warrior.walk!(towards_stairs)
-    @path_traveled << towards_stairs
-  else
-    new_direction = walk_around_object
-    @warrior.walk!(new_direction)
-    @path_traveled << new_direction
-  end
+def path_clear?(direction)
+  @warrior.feel(direction).empty?
 end
 
-def walk_towards_captive
-  if @warrior.feel(direction_to_captive).stairs?
-    @path_traveled << walk_around_object
-    @warrior.walk!(walk_around_object)
-  elsif @warrior.feel(direction_to_captive).enemy?
-    @path_traveled << (walk_around_object)
-    @warrior.walk!(walk_around_object)
+def walk_towards(object)
+  case object
+  when :stairs
+    if path_clear?(towards_stairs)
+      @warrior.walk!(towards_stairs)
+      @path_traveled << towards_stairs
+    else
+      @warrior.walk!(walk_around_object)
+      @path_traveled << (walk_around_object)
+    end
+  when :captive 
+    if path_clear?(towards_captive)
+      @warrior.walk!(towards_captive)
+      @path_traveled << towards_captive
+    else
+      @warrior.walk!(walk_around_object)
+      @path_traveled << (walk_around_object)
+    end
   else
-    @path_traveled << direction_to_captive
-    @warrior.walk!(direction_to_captive)
+    p 'walking in circles!'
   end
 end
 

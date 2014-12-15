@@ -3,7 +3,7 @@ def captives_in_room?
   listen_for_intel.include?('Captive')
 end
 
-def direction_to_captive
+def towards_captive
   direction = ''
   @warrior.listen.each do |square|
 
@@ -27,18 +27,18 @@ def ticking_captives?
 end
 
 def rescue_captive
-  @warrior.rescue!(direction_to_captive)
+  @warrior.rescue!(towards_captive)
 end
 
 def found_a_captive
-  @warrior.feel(direction_to_captive).captive?
+  @warrior.feel(towards_captive).captive?
 end
 
 def free_captives
   if found_a_captive
     rescue_captive
   else  
-    walk_towards_captive
+    walk_towards(:captive)
   end
 end
 
