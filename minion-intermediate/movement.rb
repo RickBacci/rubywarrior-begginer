@@ -47,6 +47,15 @@ def walk_towards(object)
     if path_clear?(towards_captive)
       @warrior.walk!(towards_captive)
       @path_traveled << towards_captive
+    elsif trapped?
+      if outnumbered?
+        unless enemies_to_bind.empty?
+          @warrior.bind!(enemies_to_bind.first)
+          @bound_enemies << enemies_to_bind.first
+        end
+      else
+        @warrior.attack!(towards_captive)
+      end
     else
       @warrior.walk!(walk_around_object)
       @path_traveled << (walk_around_object)
@@ -69,5 +78,13 @@ def walk_around_object
     new_direction = direction if @warrior.feel(direction).empty?
   end
   new_direction
+end
+
+def trapped?
+  walk_around_object.nil?
+end
+
+def enemies_to_bind
+  @nearby_enemy_locations - [towards_captive] - @bound_enemies
 end
 

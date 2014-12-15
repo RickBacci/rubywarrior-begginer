@@ -39,6 +39,14 @@ def bound_enemy?
 end
 
 def bind_closest_enemy
-  @bound_enemies << closest_enemy
   @warrior.bind!(closest_enemy)
+  @bound_enemies << closest_enemy
+end
+
+def found_a_bound_enemy
+  @warrior.feel(@enemy_locations.first).captive?
+end
+
+def enemies_in_room?
+  @enemy_locations.first
 end

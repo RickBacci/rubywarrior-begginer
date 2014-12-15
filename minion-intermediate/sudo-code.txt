@@ -26,3 +26,15 @@ Attempt to bind enemies on way to rescue dude that is gonna die.
 
 fix number of enemies to reflect only enemies that are right next to warrior.
 
+Go directly to the ticking captive. No binding. No attacking.
+
+
+-- Level 7 --
+
+Original captive_ticking had warrior walking past all enemies until he could free ticking captive.
+
+If warrior encountered an obstacle it would find the empty space (excluding warrior's previous location) and move there.
+
+warrior needs to bind the enemies that are not directly in his path, and kill the one that is.
+
+
