@@ -1,17 +1,3 @@
-# def number_of_enemies_next_to_warrior
-#  # return 0 if @enemy_locations.empty?
-#  # @enemy_locations.size
-#    total = 0
-
-#   possible_directions.each do |direction|
-#     total = 0
-#     if @warrior.feel(direction) == 'Sludge' || @warrior.feel(direction) == 'Thick Sludge'
-#       total += 1
-#     end
-#     total
-#   end
-#   total
-# end
 
 def closest_enemy
   @enemy_locations.first
