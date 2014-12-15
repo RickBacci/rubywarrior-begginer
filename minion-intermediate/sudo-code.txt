@@ -37,4 +37,10 @@ If warrior encountered an obstacle it would find the empty space (excluding warr
 
 warrior needs to bind the enemies that are not directly in his path, and kill the one that is.
 
+-- Level 8 --
+
+Warrior now needs to determine if there are multiple enemies directly in front of him by looking.
+
+If there is, then warrior needs to detonate a bomb.
+
 
