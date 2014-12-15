@@ -3,14 +3,14 @@ def captives_in_room?
   listen_for_intel.include?('Captive')
 end
 
-def towards_captive
+def towards_captive 
   direction = ''
   @warrior.listen.each do |square|
 
     next if square.to_s != 'Captive'
 
-    if ticking_captives? && square.ticking?
-      direction = @warrior.direction_of(square)
+    if ticking_captives? #&& square.ticking?
+      direction = @warrior.direction_of(square) if square.ticking?
     else 
       direction = @warrior.direction_of(square)
     end

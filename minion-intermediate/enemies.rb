@@ -7,12 +7,20 @@ def outnumbered?
   @enemies_near_warrior > 1
 end
 
+def enemy
+  next_to_warrior?(:enemy)
+end
+
+def enemy?
+  next_to_warrior?(:enemy)
+end
+
 def attack_closest_enemy
   
-  if next_to_warrior?(:enemy)
-    @warrior.attack!(next_to_warrior?(:enemy))
-  elsif @bound_enemies.length >= 1
-    @warrior.attack!(@bound_enemies.first)
+  if enemy?
+    @warrior.attack!(enemy)
+  elsif bound_enemy?
+    @warrior.attack!(bound_enemy)
   else
     p 'Why are you here?'
   end
@@ -20,6 +28,14 @@ end
 
 def no_enemies_found
   @enemy_locations.nil?
+end
+
+def bound_enemy
+  @bound_enemies.first
+end
+
+def bound_enemy?
+  @bound_enemies.length >= 1
 end
 
 def bind_closest_enemy
