@@ -1,26 +1,23 @@
 
 def listen_for_intel # finds everything in room
-  @enemy_locations = []
-  @captive_locations = []
-  @enemies_near_warrior = 0
-  @nearby_enemy_locations = []
-
-
+  @directions_to_all_enemies = []
+  @direction_to_captive_locations = []
+ 
   squares = []
   @warrior.listen.each do |square|
     direction = @warrior.direction_of(square)
-    enemy = @warrior.feel(direction).enemy?
+    #enemy = @warrior.feel(direction).enemy?
 
     case square.to_s
 
     when 'Captive'
-      @captive_locations << direction
+      @direction_to_captive_locations << direction
     when 'Sludge'
-      @enemy_locations << direction  
-      record_nearby_enemy_intel(direction) if enemy
+      @directions_to_all_enemies << direction  
+      #record_nearby_enemy_intel(direction) if enemy
     when 'Thick Sludge'
-      @enemy_locations << direction
-      record_nearby_enemy_intel(direction) if enemy
+      @directions_to_all_enemies << direction
+      #record_nearby_enemy_intel(direction) if enemy
     else
       p 'in listen for intel'
     end
@@ -28,6 +25,7 @@ def listen_for_intel # finds everything in room
   end
   squares
 end
+
 
 def next_to_warrior?(object)
   possible_directions.each do |direction|
@@ -57,6 +55,62 @@ def next_enemy?
 end
 
 def record_nearby_enemy_intel(direction)
-  @enemies_near_warrior += 1
-  @nearby_enemy_locations << direction
+  @total_enemies_in_attack_range += 1
+  @direction_of_enemies_in_attack_range << direction
 end
+
+
+def look_for_intel
+  @total_enemies_in_attack_range = 0
+  @direction_of_enemies_in_attack_range = []
+  @captive_in_danger = false
+
+
+  possible_directions.each do |direction|
+    enemy = @warrior.feel(direction).enemy?
+    record_nearby_enemy_intel(direction) if enemy
+    @warrior.look(direction).each do |square|
+      @captive_in_danger = true if square.captive?
+    end
+    
+  end
+  @direction_of_enemies_in_attack_range
+end
+
+def look_for_enemies_towards_captives
+  squares = []
+    @warrior.look(towards_captive).each do |square|
+      squares << square.to_s
+    end
+  squares
+  
+end
+
+def how_far_to(subject) ## what am i doing? #should not count enemy captives
+
+  distance = 0
+  @warrior.listen.each do |space|
+    p "space to string: #{space.to_s}"
+    p "in how_far_to distance to #{space.to_s} #{@warrior.distance_of(space)}"
+    p "direction of #{space.to_s} is #{@warrior.direction_of(space)}"
+    if @warrior.distance_of(space) < 2
+      distance = @warrior.distance_of(space)
+      return distance
+    else
+      distance = @warrior.distance_of(space)
+    end
+  end
+  distance
+end 
+
+def too_close_to_captive_for_bombs(subject)
+  @warrior.listen.each do |space|
+    #p "this is the subject #{subject}"
+    #p "this is the space #{space.to_s}"
+    puts
+    p "this is the distance to #{space.to_s} #{@warrior.distance_of(space)}"
+    p "this is the direction of #{space.to_s} #{@warrior.direction_of(space)}"
+    puts 
+  end
+  subject
+end 

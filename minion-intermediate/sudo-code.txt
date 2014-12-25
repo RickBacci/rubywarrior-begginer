@@ -43,4 +43,16 @@ Warrior now needs to determine if there are multiple enemies directly in front o
 
 If there is, then warrior needs to detonate a bomb.
 
+-- level 9 -- 
+
+Warrior is completely surrounded.
+Warrior will die at the end of the 2nd turn.
+
+Bombing twice :forward fails
+Bombing :forward then :left fails
+Bombing :left then :right fails
+
+Need to bind :left and :right.
+Kill :forward sludge. Heal, then advance. Then 3 bombs.
+
 

@@ -20,6 +20,7 @@ def retrace_footsteps(direction)
 end
 
 def retreat_to_safety
+  @retreat = true
   direction_to_safety = retrace_footsteps(@path_traveled.last)
   @path_traveled << direction_to_safety
   @warrior.walk!(direction_to_safety)
@@ -81,7 +82,12 @@ def walk_around_object
 end
 
 def trapped?
-  walk_around_object.nil?
+  # return true if walk_around_object.nil?
+  # false
+  possible_directions.each do |direction|
+    return false if @warrior.feel(direction).empty?
+  end
+  true
 end
 
 def enemies_to_bind
