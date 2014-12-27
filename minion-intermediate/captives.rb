@@ -35,10 +35,13 @@ def found_a_captive
 end
 
 def free_captives
+  p 'in free_captives'
   if found_a_captive
     rescue_captive
-  else  
-    walk_towards(:captive)
+  else
+    p 'walk towards captive'
+    p walk_towards(:captive)
+    #@path_traveled << 
   end
 end
 

@@ -20,6 +20,7 @@ def retrace_footsteps(direction)
 end
 
 def retreat_to_safety
+  p 'in retreat to safety'
   @retreat = true
   direction_to_safety = retrace_footsteps(@path_traveled.last)
   @path_traveled << direction_to_safety
@@ -59,7 +60,7 @@ def walk_towards(object)
       end
     else
       @warrior.walk!(walk_around_object)
-      @path_traveled << (walk_around_object)
+      @path_traveled << walk_around_object
     end
   else
     p 'walking in circles!'

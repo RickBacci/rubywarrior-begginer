@@ -19,21 +19,23 @@ class Player
     # p "direction to captive locations: #{@direction_to_captive_locations}"
     # p "total enemies in attack range: #{@total_enemies_in_attack_range}"
      #p "direction of enemies in attack range: #{@direction_of_enemies_in_attack_range}"
-     p "trapped? #{trapped?}"
-    #  p "ticking captives: #{ticking_captives?}"
-      p "bound enemies: #{@bound_enemies}"
+  #   p "trapped? #{trapped?}"
+  #    p "ticking captives: #{ticking_captives?}"
+  #    p "bound enemies: #{@bound_enemies}"
     #  p "multiple enemies ahead: #{multiple_enemies_ahead?}"
-      p "direction to captive: #{towards_captive}"
+  #    p "direction to captive: #{towards_captive}"
     #  #p "captive in danger: #{@captive_in_danger}"
     #  p "outnumbered: #{outnumbered?}"
     #  p "path to captives blocked: #{path_to_captives_blocked?}"
     #  p "path clear towards captive: #{path_clear?(towards_captive)}"
     #  p "warrior health #{@warrior.health}"
-     #p "path traveled last #{@path_traveled.last}"
+     p "path traveled last #{@path_traveled.last}"
      #p "serverely wounded: #{severely_wounded?}"
      #p look_for_enemies_towards_captives
      #p "distance to captive #{how_far_to('Captive')}"
-     p too_close_to_captive_for_bombs('Captive')
+     #p too_close_to_captive_for_bombs('Captive')
+     #p @warrior.health
+
      @blocked = false if @blocked.nil?
 
     
@@ -59,6 +61,7 @@ class Player
           else
             p 'not outnumbered'
             @warrior.walk!(towards_captive)
+            @path_traveled << towards_captive
           end
         elsif @warrior.health < 10
           @warrior.rest!
@@ -75,6 +78,7 @@ class Player
             @warrior.rescue!(towards_captive)
           else
             @warrior.walk!(towards_captive)
+            @path_traveled << towards_captive
           end
         elsif @warrior.feel(towards_captive).empty?
           @warrior.walk!(towards_captive)
@@ -95,7 +99,14 @@ class Player
       elsif severely_wounded?
         retreat_to_safety
       elsif multiple_enemies_ahead?
-        kill_enemies
+        p "in multiple_enemies_ahead"
+        if captives_in_room?
+          @warrior.attack!(towards_captive)
+        else
+          @warrior.attack!(next_to_warrior?(:enemy))
+        #kill_enemies ## can't be just captive
+        end
+        
       else
         attack_closest_enemy
       end

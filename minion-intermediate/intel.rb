@@ -90,9 +90,9 @@ def how_far_to(subject) ## what am i doing? #should not count enemy captives
 
   distance = 0
   @warrior.listen.each do |space|
-    p "space to string: #{space.to_s}"
-    p "in how_far_to distance to #{space.to_s} #{@warrior.distance_of(space)}"
-    p "direction of #{space.to_s} is #{@warrior.direction_of(space)}"
+   # p "space to string: #{space.to_s}"
+   # p "in how_far_to distance to #{space.to_s} #{@warrior.distance_of(space)}"
+   # p "direction of #{space.to_s} is #{@warrior.direction_of(space)}"
     if @warrior.distance_of(space) < 2
       distance = @warrior.distance_of(space)
       return distance
@@ -107,10 +107,10 @@ def too_close_to_captive_for_bombs(subject)
   @warrior.listen.each do |space|
     #p "this is the subject #{subject}"
     #p "this is the space #{space.to_s}"
-    puts
-    p "this is the distance to #{space.to_s} #{@warrior.distance_of(space)}"
-    p "this is the direction of #{space.to_s} #{@warrior.direction_of(space)}"
-    puts 
+   # puts
+  #  "this is the distance to #{space.to_s} #{@warrior.distance_of(space)}"
+  #  "this is the direction of #{space.to_s} #{@warrior.direction_of(space)}"
+   # puts 
   end
   subject
 end 

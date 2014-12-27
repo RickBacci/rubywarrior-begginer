@@ -8,18 +8,27 @@ def outnumbered?
 end
 
 def enemy
-  next_to_warrior?(:enemy)
+  p 'in enemy'
+  p next_to_warrior?(:enemy)
 end
 
 def single_enemy?#(direction)
+  if @total_enemies_in_attack_range == 1
+    return true
+  end
+  false
   #@warrior.feel(direction).enemy?
-  @warrior.feel.enemy?
+  #@warrior.feel.enemy?
 end
 
 def attack_closest_enemy
-  if single_enemy?
+  if single_enemy?#(:backward)
+    p 'in attack closest enemy single enemy'
+    p enemy
     @warrior.attack!(enemy)
   elsif bound_enemy?
+    p 'in attack closest enemy bound enemy'
+    p @bound_enemies
     @warrior.attack!(bound_enemy)
   else
     p 'Why are you here?'
@@ -66,21 +75,26 @@ def enemies_in_room?
 end
 
 def kill_bound_enemies
+  p 'in kill bound enemies'
   if found_a_bound_enemy
     @warrior.attack!(@directions_to_all_enemies.first)
     @bound_enemies.shift
   else
     @warrior.walk!(@directions_to_all_enemies.first)
+    @path_traveled << @directions_to_all_enemies.first
   end
 end
 
 def kill_enemies
+  p 'in kill enemies'
   if multiple_enemies_ahead? && !@captive_in_danger
     bomb_enemies
   elsif single_enemy?
     attack_enemy
   else
+
     @warrior.walk!(@directions_to_all_enemies.first)
+    @path_traveled << @directions_to_all_enemies.first
   end
 end
 
@@ -98,7 +112,7 @@ def multiple_enemies_ahead?  # bad logic!
     squares << square.to_s
   end
   squares.each do |square|
-    p square
+    #p square
     if squares[0] == 'Sludge' || squares[1] == 'Thick Sludge'
       return true
     end
@@ -116,5 +130,7 @@ def bomb_enemies
 end
 
 def attack_enemy
+  p 'in attack enemy'
+  #@warrior.attack!(towards_enemy)
   @warrior.attack!(enemy)
 end
