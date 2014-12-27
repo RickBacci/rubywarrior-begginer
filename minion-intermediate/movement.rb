@@ -21,10 +21,17 @@ end
 
 def retreat_to_safety
   p 'in retreat to safety'
+  p @path_traveled
   @retreat = true
-  direction_to_safety = retrace_footsteps(@path_traveled.last)
-  @path_traveled << direction_to_safety
-  @warrior.walk!(direction_to_safety)
+  if !@path_traveled.empty?
+    direction_to_safety = retrace_footsteps(@path_traveled.last)
+    @path_traveled << direction_to_safety
+    @warrior.walk!(direction_to_safety)
+  else
+    direction_to_safety = walk_around_object
+    @path_traveled << direction_to_safety
+    @warrior.walk!(direction_to_safety)
+  end
 end
 
 def towards_stairs

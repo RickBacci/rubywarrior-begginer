@@ -79,9 +79,13 @@ end
 
 def kill_enemies
   p 'in kill_enemies'
+  p single_enemy?
+  p @directions_to_all_enemies
   if multiple_enemies_ahead? && !@captive_in_danger
+    p 'in kill enemies multiple ahead and no captives'
     bomb_enemies
   elsif single_enemy?
+    p 'in kill enemies single_enemy? true'
     attack_enemy
   else
     @warrior.walk!(@directions_to_all_enemies.first)
@@ -93,23 +97,26 @@ end
 def multiple_enemies_ahead?  # bad logic!
   squares = []
   @warrior.look.each do |square|
-    squares << square.to_s
+    squares << square.enemy?
   end
-  squares.each do |square|
-    if squares[0] == 'Sludge' || squares[1] == 'Thick Sludge'
+  p 'squares in multiple_enemies_ahead'
+  p squares
+  #squares.each do |square|
+    if squares[0] && squares[1]
       return true
     end
-  end
+  #end
   false
 end
 
 def bomb_enemies # think this logic is limited
-  @dir ||= [:left, :right]
-  if @dir == []
-    @warrior.attack!(:left)
-  else
-    @warrior.detonate!(@dir.shift)
-  end
+  # @dir ||= [:left, :right]
+  # if @dir == []
+  #   @warrior.attack!(:left)
+  # else
+  #   @warrior.detonate!(@dir.shift)
+  # end
+  @warrior.detonate!(enemy)
 end
 
 def attack_enemy
