@@ -8,8 +8,8 @@ def outnumbered?
 end
 
 def enemy
-  p 'in enemy'
-  p next_to_warrior?(:enemy)
+  #p 'in enemy'
+  next_to_warrior?(:enemy)
 end
 
 def single_enemy?
@@ -21,12 +21,12 @@ end
 
 def attack_closest_enemy
   if single_enemy?
-    p 'in attack closest enemy single enemy'
-    p enemy
+    #p 'in attack closest enemy single enemy'
+    #p enemy
     @warrior.attack!(enemy)
   elsif bound_enemy?
-    p 'in attack closest enemy bound enemy'
-    p @bound_enemies
+    #p 'in attack closest enemy bound enemy'
+    #p @bound_enemies
     @warrior.attack!(bound_enemy)
   else
     p 'Why are you here?'
