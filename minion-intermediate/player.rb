@@ -88,7 +88,6 @@ class Player
         end
       end
     elsif next_to_warrior?(:captive) && @bound_enemies == []
-      #p next_to_warrior?(:captive)
       free_captives
     elsif next_to_warrior?(:enemy) ### none of this will happen
       if outnumbered?              ### until captive saved!

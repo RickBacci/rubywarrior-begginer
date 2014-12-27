@@ -53,7 +53,7 @@ def walk_towards(object)
       @path_traveled << (walk_around_object)
     end
   when :captive 
-    if path_clear?(towards_captive)
+    if path_clear?(towards_captive) && !@warrior.feel(towards_captive).stairs?
       @warrior.walk!(towards_captive)
       @path_traveled << towards_captive
     elsif trapped?

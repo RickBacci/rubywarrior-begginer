@@ -39,8 +39,11 @@ def free_captives
   if found_a_captive
     rescue_captive
   else
-    p 'walk towards captive'
-    p walk_towards(:captive)
+    # if @warrior.feel(walk_towards(:captive)).stairs?
+    #   p "stairs!"
+    # else
+      p walk_towards(:captive)
+    # end
   end
 end
 
