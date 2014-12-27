@@ -3,13 +3,13 @@ def captives_in_room?
   listen_for_intel.include?('Captive')
 end
 
-def towards_captive 
+def towards_captive # direction set either way
   direction = nil
   @warrior.listen.each do |square|
 
     next if square.to_s != 'Captive'
 
-    if ticking_captives? #&& square.ticking?
+    if ticking_captives?
       direction = @warrior.direction_of(square) if square.ticking?
     else 
       direction = @warrior.direction_of(square) if !ticking_captives?
@@ -41,7 +41,6 @@ def free_captives
   else
     p 'walk towards captive'
     p walk_towards(:captive)
-    #@path_traveled << 
   end
 end
 

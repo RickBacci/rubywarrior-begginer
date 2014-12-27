@@ -12,17 +12,15 @@ def enemy
   p next_to_warrior?(:enemy)
 end
 
-def single_enemy?#(direction)
+def single_enemy?
   if @total_enemies_in_attack_range == 1
     return true
   end
   false
-  #@warrior.feel(direction).enemy?
-  #@warrior.feel.enemy?
 end
 
 def attack_closest_enemy
-  if single_enemy?#(:backward)
+  if single_enemy?
     p 'in attack closest enemy single enemy'
     p enemy
     @warrior.attack!(enemy)
@@ -48,15 +46,9 @@ def bound_enemy?
 end
 
 def bind_closest_enemy
-  #@target = @directions_to_all_enemies - @bound_enemies - [towards_captive]
-  #@target = @directions_to_all_enemies - [towards_captive]
-  #p 'target'
-   @target = @direction_of_enemies_in_attack_range - [towards_captive]
-
+  @target = @direction_of_enemies_in_attack_range - [towards_captive]
 
   if @target != []
-
-   
     @warrior.bind!(@target.first)
     @bound_enemies << @target.first
   else
@@ -75,7 +67,7 @@ def enemies_in_room?
 end
 
 def kill_bound_enemies
-  p 'in kill bound enemies'
+  p 'in kill_bound_enemies'
   if found_a_bound_enemy
     @warrior.attack!(@directions_to_all_enemies.first)
     @bound_enemies.shift
@@ -86,25 +78,17 @@ def kill_bound_enemies
 end
 
 def kill_enemies
-  p 'in kill enemies'
+  p 'in kill_enemies'
   if multiple_enemies_ahead? && !@captive_in_danger
     bomb_enemies
   elsif single_enemy?
     attack_enemy
   else
-
     @warrior.walk!(@directions_to_all_enemies.first)
     @path_traveled << @directions_to_all_enemies.first
   end
 end
 
-# def number_of_enemies_ahead?
-#   enemies = 0
-#   @warrior.look.each do |space|
-#     enemies += 1 if space.enemy?
-#   end
-#   enemies
-# end
 
 def multiple_enemies_ahead?  # bad logic!
   squares = []
@@ -112,7 +96,6 @@ def multiple_enemies_ahead?  # bad logic!
     squares << square.to_s
   end
   squares.each do |square|
-    #p square
     if squares[0] == 'Sludge' || squares[1] == 'Thick Sludge'
       return true
     end
@@ -120,8 +103,8 @@ def multiple_enemies_ahead?  # bad logic!
   false
 end
 
-def bomb_enemies
-  @dir ||= [:left, :right]#, :left]
+def bomb_enemies # think this logic is limited
+  @dir ||= [:left, :right]
   if @dir == []
     @warrior.attack!(:left)
   else
@@ -130,7 +113,6 @@ def bomb_enemies
 end
 
 def attack_enemy
-  p 'in attack enemy'
-  #@warrior.attack!(towards_enemy)
+  p 'in attack_enemy'
   @warrior.attack!(enemy)
 end

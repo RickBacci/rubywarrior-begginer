@@ -29,7 +29,7 @@ class Player
     #  p "path to captives blocked: #{path_to_captives_blocked?}"
     #  p "path clear towards captive: #{path_clear?(towards_captive)}"
     #  p "warrior health #{@warrior.health}"
-     p "path traveled last #{@path_traveled.last}"
+     #p "path traveled last #{@path_traveled.last}"
      #p "serverely wounded: #{severely_wounded?}"
      #p look_for_enemies_towards_captives
      #p "distance to captive #{how_far_to('Captive')}"
@@ -83,16 +83,10 @@ class Player
         elsif @warrior.feel(towards_captive).empty?
           @warrior.walk!(towards_captive)
           @path_traveled << towards_captive
-          #@warrior.detonate!(towards_captive)
         else
-          #
+          p 'ticking captives...not outnumbered?'
         end
       end
-
-
-
-
-
     elsif next_to_warrior?(:enemy) ### none of this will happen
       if outnumbered?              ### until captive saved!
         bind_closest_enemy
@@ -104,9 +98,7 @@ class Player
           @warrior.attack!(towards_captive)
         else
           @warrior.attack!(next_to_warrior?(:enemy))
-        #kill_enemies ## can't be just captive
         end
-        
       else
         attack_closest_enemy
       end
@@ -122,7 +114,6 @@ class Player
       walk_towards(:stairs)
   	else
       p 'Warrior doing nothing'
-      
   	end
   end
 end

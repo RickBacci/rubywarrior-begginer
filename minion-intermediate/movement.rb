@@ -83,8 +83,6 @@ def walk_around_object
 end
 
 def trapped?
-  # return true if walk_around_object.nil?
-  # false
   possible_directions.each do |direction|
     return false if @warrior.feel(direction).empty?
   end

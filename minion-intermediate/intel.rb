@@ -6,7 +6,6 @@ def listen_for_intel # finds everything in room
   squares = []
   @warrior.listen.each do |square|
     direction = @warrior.direction_of(square)
-    #enemy = @warrior.feel(direction).enemy?
 
     case square.to_s
 
@@ -14,10 +13,8 @@ def listen_for_intel # finds everything in room
       @direction_to_captive_locations << direction
     when 'Sludge'
       @directions_to_all_enemies << direction  
-      #record_nearby_enemy_intel(direction) if enemy
     when 'Thick Sludge'
       @directions_to_all_enemies << direction
-      #record_nearby_enemy_intel(direction) if enemy
     else
       p 'in listen for intel'
     end
@@ -90,9 +87,6 @@ def how_far_to(subject) ## what am i doing? #should not count enemy captives
 
   distance = 0
   @warrior.listen.each do |space|
-   # p "space to string: #{space.to_s}"
-   # p "in how_far_to distance to #{space.to_s} #{@warrior.distance_of(space)}"
-   # p "direction of #{space.to_s} is #{@warrior.direction_of(space)}"
     if @warrior.distance_of(space) < 2
       distance = @warrior.distance_of(space)
       return distance
