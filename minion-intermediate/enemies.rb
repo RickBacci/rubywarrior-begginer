@@ -63,7 +63,11 @@ def found_a_bound_enemy
 end
 
 def enemies_in_room?
-  @directions_to_all_enemies.first
+  #@directions_to_all_enemies.first
+  if (@directions_to_all_enemies.size - @bound_enemies.size) == 0
+    return false
+  end
+  true
 end
 
 def kill_bound_enemies
@@ -94,13 +98,13 @@ def kill_enemies
 end
 
 
-def multiple_enemies_ahead?  # bad logic!
+def multiple_enemies_ahead?
   squares = []
   @warrior.look.each do |square|
     squares << square.enemy?
   end
-  p 'squares in multiple_enemies_ahead'
-  p squares
+  #p 'squares in multiple_enemies_ahead'
+  #p squares
   #squares.each do |square|
     if squares[0] && squares[1]
       return true

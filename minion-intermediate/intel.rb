@@ -108,3 +108,14 @@ def too_close_to_captive_for_bombs(subject)
   end
   subject
 end 
+
+def continue_bombing?
+  spaces = []
+  @warrior.look.each do |space|
+    spaces << space.enemy?
+  end
+  if spaces[0] == true || spaces[1] == true
+    return true
+  end
+  false
+end

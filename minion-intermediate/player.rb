@@ -10,6 +10,7 @@ class Player
   	@warrior = warrior
     @path_traveled ||= []
     @bound_enemies ||= []
+    @queue ||= []
 
 
     listen_for_intel # do not comment out!
@@ -18,14 +19,14 @@ class Player
     #p "direction of all enemies: #{@directions_to_all_enemies}"
     # p "direction to captive locations: #{@direction_to_captive_locations}"
     # p "total enemies in attack range: #{@total_enemies_in_attack_range}"
-     #p "direction of enemies in attack range: #{@direction_of_enemies_in_attack_range}"
+     p "direction of enemies in attack range: #{@direction_of_enemies_in_attack_range}"
   #   p "trapped? #{trapped?}"
   #    p "ticking captives: #{ticking_captives?}"
-  #    p "bound enemies: #{@bound_enemies}"
-    #  p "multiple enemies ahead: #{multiple_enemies_ahead?}"
+      p "bound enemies: #{@bound_enemies}"
+      p "multiple enemies ahead: #{multiple_enemies_ahead?}"
   #    p "direction to captive: #{towards_captive}"
     #  #p "captive in danger: #{@captive_in_danger}"
-    #  p "outnumbered: #{outnumbered?}"
+      p "outnumbered: #{outnumbered?}"
     #  p "path to captives blocked: #{path_to_captives_blocked?}"
     #  p "path clear towards captive: #{path_clear?(towards_captive)}"
     #  p "warrior health #{@warrior.health}"
@@ -35,39 +36,83 @@ class Player
      #p "distance to captive #{how_far_to('Captive')}"
      #p too_close_to_captive_for_bombs('Captive')
      #p @warrior.health
+     p "this is the path_traveled #{@path_traveled}"
+     p "this is the queue #{@queue}"
+     p "continue bombing? #{continue_bombing?}"
+
+    #p @directions_to_all_enemies
+     #p "enemies_in_room #{enemies_in_room?}"
 
      @blocked = false if @blocked.nil?
 
     
   	if ticking_captives?
-      if @warrior.health < 4
+      if @warrior.health < 4 && enemies_in_room? # used to be 4
         @warrior.rest!
+      elsif !@queue.empty?
+        p 'in queue has values'
+        if continue_bombing?
+          action = @queue.shift
+          if action == :bomb
+            @warrior.detonate!
+          else
+            p 'really?'
+          end
+        else
+          @queue = []
+          @warrior.walk!
+          @path_traveled << :forward
+        end
       elsif outnumbered? && trapped?
-        bind_closest_enemy
+        p 'outnumbered and trapped'
+        if (@direction_of_enemies_in_attack_range == [:forward, :left, :right]) && @path_traveled.empty?
+          bind_closest_enemy
+        else
+          p "warrior has yet to move!"
+          if @path_traveled.empty?
+            bind_closest_enemy
+          else
+            @queue = [:bomb, :bomb, :bomb]
+            @warrior.walk!(retrace_footsteps(@path_traveled.last))
+            @path_traveled << retrace_footsteps(@path_traveled.last)
+          end
+        end
       elsif outnumbered?
         p 'outnumbered'
         if @warrior.feel(towards_captive).empty?
           @warrior.walk!(towards_captive)
           @path_traveled << towards_captive
         else
-          @warrior.attack!(towards_captive)
+          bind_closest_enemy
+          #@warrior.attack!(towards_captive)
         end
       else # not outnumbered
         if @direction_of_enemies_in_attack_range.size == 1
-          if @warrior.health < 4
+          p 'in 1 enemy in attack range'
+          if @warrior.health < 5 && enemies_in_room?# needs to stay at 5
             @warrior.rest!
           elsif how_far_to('Captive') != 2
-            @warrior.detonate!(towards_captive)
+            p how_far_to('Captive')
+            if @warrior.feel(towards_captive).empty?
+              @warrior.walk!(towards_captive)
+              @path_traveled << towards_captive
+            elsif multiple_enemies_ahead?
+              @warrior.detonate!(towards_captive)
+            else
+              walk_towards(:captive)
+              
+            end
           else
             p 'not outnumbered'
             @warrior.walk!(towards_captive)
             @path_traveled << towards_captive
           end
-        elsif @warrior.health < 10
+        elsif @warrior.health < 10 && enemies_in_room?
           @warrior.rest!
         elsif how_far_to('Captive') != 2
           #kill_enemies
           p 'bomb in here?'
+          p "value of @blocked #{@blocked}"
           if @warrior.feel.enemy? || @blocked
             @warrior.detonate!(towards_captive)
             @blocked = false
