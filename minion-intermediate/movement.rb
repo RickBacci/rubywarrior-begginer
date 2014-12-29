@@ -98,3 +98,13 @@ def enemies_to_bind
   @nearby_enemy_locations - [towards_captive] - @bound_enemies
 end
 
+def warrior_has_yet_to_move
+  @path_traveled.empty?
+end
+
+def move_away_to_throw_bombs
+  @queue = [:bomb, :bomb, :bomb]
+  @warrior.walk!(retrace_footsteps(@path_traveled.last))
+  @path_traveled << retrace_footsteps(@path_traveled.last)
+end  
+
