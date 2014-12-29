@@ -74,14 +74,7 @@ def look_for_intel
   @direction_of_enemies_in_attack_range
 end
 
-def look_for_enemies_towards_captives
-  squares = []
-    @warrior.look(towards_captive).each do |square|
-      squares << square.to_s
-    end
-  squares
-  
-end
+
 
 def how_far_to(subject) ## what am i doing? #should not count enemy captives
 
