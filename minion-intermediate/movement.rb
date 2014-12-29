@@ -19,10 +19,7 @@ def retrace_footsteps(direction)
   end
 end
 
-def retreat_to_safety
-  #p 'in retreat to safety'
-  #p @path_traveled
-  @retreat = true
+def move_to_safety
   if !@path_traveled.empty?
     direction_to_safety = retrace_footsteps(@path_traveled.last)
     @path_traveled << direction_to_safety

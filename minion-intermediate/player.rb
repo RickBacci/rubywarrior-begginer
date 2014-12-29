@@ -76,7 +76,7 @@ class Player
             @blocked = false
           elsif @warrior.feel(towards_captive).enemy?
             @blocked = true
-            retreat_to_safety
+            move_to_safety
           elsif @warrior.feel(towards_captive).captive?
             @warrior.rescue!(towards_captive)
           else
@@ -94,7 +94,7 @@ class Player
       if outnumbered?              ### until captive saved!
         bind_closest_enemy
       elsif severely_wounded?
-        retreat_to_safety
+        move_to_safety
       elsif multiple_enemies_ahead?
         free_captives if captives_in_room?
       else
