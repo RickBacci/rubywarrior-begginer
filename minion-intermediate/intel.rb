@@ -105,3 +105,24 @@ end
 def surrounded?
   (@direction_of_enemies_in_attack_range == [:forward, :left, :right]) && @path_traveled.empty?
 end
+
+def previous_orders?
+  !@queue.empty?
+end
+
+def enact_orders
+  if continue_bombing?
+    action = @queue.shift
+    if action == :bomb
+      @warrior.detonate!
+    else
+      p 'error in queue.'
+    end
+  else
+    @queue = []
+    @warrior.walk!
+    @path_traveled << :forward
+  end
+end
+
+

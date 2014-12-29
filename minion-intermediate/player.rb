@@ -13,46 +13,35 @@ class Player
     @bound_enemies ||= []
     @queue ||= []
     @blocked = false if @blocked.nil?
+    @current_goal = [:ticking_captives, :captives, :enemies, :bound_enemies, :stairs]
 
     listen_for_intel  # do not comment out!
     look_for_intel    # do not comment out!
 
 
   	if ticking_captives?
-      if severely_wounded? && enemies_in_room?
-        @warrior.rest!
-      elsif !@queue.empty?
-        if continue_bombing?
-          action = @queue.shift
-          if action == :bomb
-            @warrior.detonate!
-          else
-            p 'error in queue.'
-          end
-        else
-          @queue = []
-          @warrior.walk!
-          @path_traveled << :forward
-        end
+      #if severely_wounded? && enemies_in_room?
+       # @warrior.rest!
+      if previous_orders?
+        enact_orders
       elsif outnumbered? && trapped?
+      #elsif trapped?
         if surrounded?
           bind_closest_enemy
         else
-          if @path_traveled.empty?
+          if warrior_has_yet_to_move
             bind_closest_enemy
           else
-            @queue = [:bomb, :bomb, :bomb]
-            @warrior.walk!(retrace_footsteps(@path_traveled.last))
-            @path_traveled << retrace_footsteps(@path_traveled.last)
+            move_away_to_throw_bombs
           end
         end
-      elsif outnumbered?
-        if @warrior.feel(towards_captive).empty?
-          walk_towards(:captive)
-        else
-          bind_closest_enemy
-        end
-      else # not outnumbered
+      # elsif outnumbered?
+      #   if @warrior.feel(towards_captive).empty?
+      #     walk_towards(:captive)
+      #   else
+      #     bind_closest_enemy
+      #   end
+      else # not outnumbered or trapped, and no previous orders
         if @direction_of_enemies_in_attack_range.size == 1
           if severely_wounded? && enemies_in_room?
           #if @warrior.health < 5 && enemies_in_room?
