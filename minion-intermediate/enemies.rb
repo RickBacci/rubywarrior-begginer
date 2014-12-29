@@ -71,7 +71,7 @@ def enemies_in_room?
 end
 
 def kill_bound_enemies
-  p 'in kill_bound_enemies'
+  #p 'in kill_bound_enemies'
   if found_a_bound_enemy
     @warrior.attack!(@directions_to_all_enemies.first)
     @bound_enemies.shift
@@ -82,14 +82,14 @@ def kill_bound_enemies
 end
 
 def kill_enemies
-  p 'in kill_enemies'
-  p single_enemy?
-  p @directions_to_all_enemies
+  #p 'in kill_enemies'
+  #p single_enemy?
+  #p @directions_to_all_enemies
   if multiple_enemies_ahead? && !@captive_in_danger
-    p 'in kill enemies multiple ahead and no captives'
+    #p 'in kill enemies multiple ahead and no captives'
     bomb_enemies
   elsif single_enemy?
-    p 'in kill enemies single_enemy? true'
+    #p 'in kill enemies single_enemy? true'
     attack_enemy
   else
     @warrior.walk!(@directions_to_all_enemies.first)
@@ -124,6 +124,6 @@ def bomb_enemies # think this logic is limited
 end
 
 def attack_enemy
-  p 'in attack_enemy'
+  #p 'in attack_enemy'
   @warrior.attack!(enemy)
 end
