@@ -97,17 +97,6 @@ def how_far_to(subject) ## what am i doing? #should not count enemy captives
   distance
 end 
 
-def too_close_to_captive_for_bombs(subject)
-  @warrior.listen.each do |space|
-    #p "this is the subject #{subject}"
-    #p "this is the space #{space.to_s}"
-   # puts
-  #  "this is the distance to #{space.to_s} #{@warrior.distance_of(space)}"
-  #  "this is the direction of #{space.to_s} #{@warrior.direction_of(space)}"
-   # puts 
-  end
-  subject
-end 
 
 def continue_bombing?
   spaces = []
