@@ -19,7 +19,7 @@ class Player
 
 
   	if ticking_captives?
-      if @warrior.health < 4 && enemies_in_room?
+      if severely_wounded? && enemies_in_room?
         @warrior.rest!
       elsif !@queue.empty?
         if continue_bombing?
@@ -48,27 +48,25 @@ class Player
         end
       elsif outnumbered?
         if @warrior.feel(towards_captive).empty?
-          @warrior.walk!(towards_captive)
-          @path_traveled << towards_captive
+          walk_towards(:captive)
         else
           bind_closest_enemy
         end
       else # not outnumbered
         if @direction_of_enemies_in_attack_range.size == 1
-          if @warrior.health < 5 && enemies_in_room?
+          if severely_wounded? && enemies_in_room?
+          #if @warrior.health < 5 && enemies_in_room?
             @warrior.rest!
           elsif how_far_to('Captive') != 2
             if @warrior.feel(towards_captive).empty?
-              @warrior.walk!(towards_captive)
-              @path_traveled << towards_captive
+              walk_towards(:captive)
             elsif multiple_enemies_ahead?
               @warrior.detonate!(towards_captive)
             else
               walk_towards(:captive)
             end
           else
-            @warrior.walk!(towards_captive)
-            @path_traveled << towards_captive
+            walk_towards(:captive)
           end
         elsif @warrior.health < 10 && enemies_in_room?
           @warrior.rest!
@@ -82,17 +80,15 @@ class Player
           elsif @warrior.feel(towards_captive).captive?
             @warrior.rescue!(towards_captive)
           else
-            @warrior.walk!(towards_captive)
-            @path_traveled << towards_captive
+            walk_towards(:captive)
           end
         elsif @warrior.feel(towards_captive).empty?
-          @warrior.walk!(towards_captive)
-          @path_traveled << towards_captive
+          walk_towards(:captive)
         else
           p 'ticking captives...not outnumbered?'
         end
       end
-    elsif next_to_warrior?(:captive) && @bound_enemies == []
+    elsif next_to_warrior?(:captive) && @bound_enemies == [] # no ticking captives
       free_captives
     elsif next_to_warrior?(:enemy) ### none of this will happen
       if outnumbered?              ### until captive saved!
@@ -100,15 +96,7 @@ class Player
       elsif severely_wounded?
         retreat_to_safety
       elsif multiple_enemies_ahead?
-        if captives_in_room?
-          if towards_captive.empty?
-            @warrior.walk!(towards_captive)
-          else
-            @warrior.attack!(towards_captive)
-          end
-        else
-          @warrior.attack!(next_to_warrior?(:enemy))
-        end
+        free_captives if captives_in_room?
       else
         attack_closest_enemy
       end

@@ -56,3 +56,15 @@ Need to bind :left and :right.
 Kill :forward sludge. Heal, then advance. Then 3 bombs.
 
 
+--- Refactoring --- 
+
+What are the directions on which the warrior will go?
+
+- towards captives(ticking first, then rest)
+- towards enemies(bound and unbound)
+- towards stairs
+
+
+
+
+

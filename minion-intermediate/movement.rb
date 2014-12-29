@@ -92,7 +92,6 @@ end
 def trapped?
   possible_directions.each do |direction|
         next if direction == previous_location
-
     return false if @warrior.feel(direction).empty?
   end
   true
