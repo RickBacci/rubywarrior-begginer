@@ -119,3 +119,7 @@ def continue_bombing?
   end
   false
 end
+
+def surrounded?
+  (@direction_of_enemies_in_attack_range == [:forward, :left, :right]) && @path_traveled.empty?
+end
