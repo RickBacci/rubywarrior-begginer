@@ -8,7 +8,6 @@ def outnumbered?
 end
 
 def enemy
-  #p 'in enemy'
   next_to_warrior?(:enemy)
 end
 
@@ -21,12 +20,8 @@ end
 
 def attack_closest_enemy
   if single_enemy?
-    #p 'in attack closest enemy single enemy'
-    #p enemy
     @warrior.attack!(enemy)
   elsif bound_enemy?
-    #p 'in attack closest enemy bound enemy'
-    #p @bound_enemies
     @warrior.attack!(bound_enemy)
   else
     p 'Why are you here?'
@@ -63,7 +58,6 @@ def found_a_bound_enemy
 end
 
 def enemies_in_room?
-  #@directions_to_all_enemies.first
   if (@directions_to_all_enemies.size - @bound_enemies.size) == 0
     return false
   end
@@ -82,14 +76,10 @@ def kill_bound_enemies
 end
 
 def kill_enemies
-  #p 'in kill_enemies'
-  #p single_enemy?
-  #p @directions_to_all_enemies
+ 
   if multiple_enemies_ahead? && !@captive_in_danger
-    #p 'in kill enemies multiple ahead and no captives'
     bomb_enemies
   elsif single_enemy?
-    #p 'in kill enemies single_enemy? true'
     attack_enemy
   else
     @warrior.walk!(@directions_to_all_enemies.first)
@@ -103,27 +93,14 @@ def multiple_enemies_ahead?
   @warrior.look.each do |square|
     squares << square.enemy?
   end
-  #p 'squares in multiple_enemies_ahead'
-  #p squares
-  #squares.each do |square|
-    if squares[0] && squares[1]
-      return true
-    end
-  #end
+  return true if squares[0] && squares[1]
   false
 end
 
-def bomb_enemies # think this logic is limited
-  # @dir ||= [:left, :right]
-  # if @dir == []
-  #   @warrior.attack!(:left)
-  # else
-  #   @warrior.detonate!(@dir.shift)
-  # end
+def bomb_enemies
   @warrior.detonate!(enemy)
 end
 
 def attack_enemy
-  #p 'in attack_enemy'
   @warrior.attack!(enemy)
 end

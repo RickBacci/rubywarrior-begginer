@@ -76,15 +76,14 @@ end
 
 
 
-def how_far_to(subject) ## what am i doing? #should not count enemy captives
+def how_far_to(subject) # should not count enemy captives
 
   distance = 0
   @warrior.listen.each do |space|
-    if @warrior.distance_of(space) < 2
+    if space.to_s == subject
       distance = @warrior.distance_of(space)
+      #p "The #{space.to_s} is #{distance} spaces away."
       return distance
-    else
-      distance = @warrior.distance_of(space)
     end
   end
   distance

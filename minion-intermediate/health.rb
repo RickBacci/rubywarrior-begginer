@@ -6,6 +6,11 @@ def severely_wounded?
   @warrior.health < 4
 end
 
+def severely_wounded_with_enemies_in_room?
+  severely_wounded? && enemies_in_room?
+end
+
+
 def stop_to_rest
   @warrior.rest!
 end

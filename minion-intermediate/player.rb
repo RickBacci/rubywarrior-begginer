@@ -20,12 +20,11 @@ class Player
 
 
   	if ticking_captives?
-      #if severely_wounded? && enemies_in_room?
-       # @warrior.rest!
+      
       if previous_orders?
         enact_orders
       elsif outnumbered? && trapped?
-      #elsif trapped?
+      
         if surrounded?
           bind_closest_enemy
         else
@@ -35,44 +34,21 @@ class Player
             move_away_to_throw_bombs
           end
         end
-      # elsif outnumbered?
-      #   if @warrior.feel(towards_captive).empty?
-      #     walk_towards(:captive)
-      #   else
-      #     bind_closest_enemy
-      #   end
       else # not outnumbered or trapped, and no previous orders
-        if @direction_of_enemies_in_attack_range.size == 1
-          if severely_wounded? && enemies_in_room?
-          #if @warrior.health < 5 && enemies_in_room?
-            @warrior.rest!
-          elsif how_far_to('Captive') != 2
-            if @warrior.feel(towards_captive).empty?
-              walk_towards(:captive)
-            elsif multiple_enemies_ahead?
-              @warrior.detonate!(towards_captive)
-            else
-              walk_towards(:captive)
-            end
+        if single_enemy?
+          if severely_wounded_with_enemies_in_room?
+            stop_to_rest
+          elsif multiple_enemies_ahead?
+            @warrior.detonate!(towards_captive)
           else
             walk_towards(:captive)
           end
         elsif @warrior.health < 10 && enemies_in_room?
           @warrior.rest!
-        elsif how_far_to('Captive') != 2
-          if @warrior.feel.enemy? || @blocked
-            @warrior.detonate!(towards_captive)
-            @blocked = false
-          elsif @warrior.feel(towards_captive).enemy?
-            @blocked = true
-            move_to_safety
-          elsif @warrior.feel(towards_captive).captive?
-            @warrior.rescue!(towards_captive)
-          else
-            walk_towards(:captive)
-          end
         elsif @warrior.feel(towards_captive).empty?
           walk_towards(:captive)
+        elsif @warrior.feel(towards_captive).captive?
+          @warrior.rescue!(towards_captive)
         else
           p 'ticking captives...not outnumbered?'
         end
