@@ -18,12 +18,12 @@ class Player
     listen_for_intel  # do not comment out!
     look_for_intel    # do not comment out!
 
+    if previous_orders?
+      enact_orders
 
-  	if ticking_captives?
+  	elsif ticking_captives?
       
-      if previous_orders?
-        enact_orders
-      elsif outnumbered? && trapped?
+      if outnumbered? && trapped?
       
         if surrounded?
           bind_closest_enemy
@@ -34,7 +34,7 @@ class Player
             move_away_to_throw_bombs
           end
         end
-      else # not outnumbered or trapped, and no previous orders
+      else # not outnumbered or trapped
         if single_enemy?
           if severely_wounded_with_enemies_in_room?
             stop_to_rest
@@ -45,16 +45,10 @@ class Player
           end
         elsif @warrior.health < 10 && enemies_in_room?
           @warrior.rest!
-        elsif @warrior.feel(towards_captive).empty?
-          walk_towards(:captive)
-        elsif @warrior.feel(towards_captive).captive?
-          @warrior.rescue!(towards_captive)
         else
-          p 'ticking captives...not outnumbered?'
+          free_captives
         end
       end
-    elsif next_to_warrior?(:captive) && @bound_enemies == [] # no ticking captives
-      free_captives
     elsif next_to_warrior?(:enemy) ### none of this will happen
       if outnumbered?              ### until captive saved!
         bind_closest_enemy

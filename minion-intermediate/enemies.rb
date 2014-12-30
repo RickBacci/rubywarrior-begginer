@@ -82,8 +82,8 @@ def kill_enemies
   elsif single_enemy?
     attack_enemy
   else
-    @warrior.walk!(@directions_to_all_enemies.first)
-    @path_traveled << @directions_to_all_enemies.first
+    @warrior.walk!(closest_enemy)
+    @path_traveled << closest_enemy
   end
 end
 
