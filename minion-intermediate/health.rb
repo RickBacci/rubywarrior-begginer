@@ -1,5 +1,5 @@
 
-def severely_wounded?
+def severely_wounded? 
   enemies_in_room? && @warrior.health < 4 
 end
 

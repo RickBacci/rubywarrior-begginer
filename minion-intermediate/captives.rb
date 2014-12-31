@@ -41,10 +41,3 @@ def free_captives
     walk_towards(:captive)
   end
 end
-
-def path_to_captives_blocked?
-  multiple_enemies_ahead? && trapped?
-end  
-
-
-
