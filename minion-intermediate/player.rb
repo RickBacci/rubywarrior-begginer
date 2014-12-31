@@ -23,17 +23,14 @@ class Player
 
   	elsif ticking_captives?
       
-      if outnumbered? && trapped?
-      
-        if warrior_has_yet_to_move
-          bind_closest_enemy
-        else
-          move_away_to_throw_bombs
-        end
+      if outnumbered?
+
+        bind_or_move_to_bomb
       
       elsif severely_wounded_with_enemies_in_room?
         stop_to_rest
-      else # not outnumbered or trapped
+      else # not outnumbered or severely wounded.
+
         if single_enemy?
           if multiple_enemies_ahead?
             @warrior.detonate!(towards_captive)
@@ -43,18 +40,11 @@ class Player
         else
           free_captives
         end
+
       end
 
     elsif next_to_warrior?(:enemy) ### none of this will happen
-      if outnumbered?              ### until captive saved!
-        bind_closest_enemy
-      elsif severely_wounded?
-        move_to_safety
-      elsif multiple_enemies_ahead?
-        free_captives if captives_in_room?
-      else
-        attack_closest_enemy
-      end
+      engage_enemy
   	elsif hit_points_needed?
       recover_from_battle
     elsif captives_in_room?

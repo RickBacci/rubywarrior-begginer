@@ -38,22 +38,12 @@ def bound_enemy?
   @bound_enemies.length >= 1
 end
 
-def bind_enemy(target)
-  @warrior.bind!(target)
-  @bound_enemies << target
-end
 
-def bind_closest_enemy
+def bind_enemy
   @target = @direction_of_enemies_in_attack_range - [towards_captive]
 
-  if @target != []
-    bind_enemy(@target.first)
-  else
-    p "ever in here? ======================================================="
-    #@bound_enemies = []
-    @warrior.detonate!(towards_captive)
-  end
-  
+  @warrior.bind!(@target.first)
+  @bound_enemies << @target.first
 end
 
 def found_a_bound_enemy
@@ -107,3 +97,26 @@ end
 def attack_enemy
   @warrior.attack!(enemy)
 end
+
+def bind_or_move_to_bomb
+  if warrior_has_yet_to_move
+    bind_enemy
+  else
+    move_away_to_throw_bombs
+  end
+end
+
+
+
+def engage_enemy
+  if outnumbered?
+    bind_or_move_to_bomb
+
+  elsif severely_wounded?
+    move_to_safety
+    
+  else
+    attack_closest_enemy
+  end
+end
+
