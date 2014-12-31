@@ -29,7 +29,8 @@ def move_to_safety
 
     walk_towards(:safety)
   else
-    @direction_to_safety = walk_around_object
+    p "move to safety --------------------------------------"
+    p @direction_to_safety = walk_around_object
     walk_towards(:safety)
   end
 end
@@ -63,6 +64,7 @@ def walk_towards(object)
           @bound_enemies << enemies_to_bind.first
         end
       else
+        p "when am i in here? -----------------------------"
         @warrior.attack!(towards_captive)
       end
     else
@@ -98,9 +100,8 @@ def outnumbered?
   @total_enemies_in_attack_range > 1
 end
 
-def trapped? # cannot move anywhere()
+def trapped?
   possible_directions.each do |direction|
-      ###  next if direction == previous_location
     return false if @warrior.feel(direction).empty?
   end
   true
@@ -109,7 +110,9 @@ end
 def move_away_to_throw_bombs
   #p "in move away to throw bombs"
   @queue = [:bomb, :bomb, :bomb]
-  direction = move_to_safety unless trapped?
+  #direction = move_to_safety unless trapped?
+
+  move_to_safety unless trapped?
 end  
 
 

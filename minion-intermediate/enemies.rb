@@ -102,11 +102,9 @@ end
 def bind_or_move_to_bomb
   #p 'in bind or move to bomb ---------------------------'
   if outnumbered?
-  #if warrior_has_yet_to_move
     if found_a_captive
       rescue_captive
     elsif !single_enemy?
-      #if @path_traveled.empty? # logic needed here
       if trapped?
         bind_enemy
       else
