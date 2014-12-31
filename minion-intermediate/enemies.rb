@@ -113,10 +113,17 @@ def engage_enemy
     bind_or_move_to_bomb
 
   elsif severely_wounded?
-    move_to_safety
-    
+    rest_or_flee?
   else
     attack_closest_enemy
+  end
+end
+
+def rest_or_flee?
+  if next_to_warrior?(:enemy)
+    move_to_safety
+  else
+    stop_to_rest
   end
 end
 

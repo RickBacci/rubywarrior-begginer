@@ -24,23 +24,15 @@ class Player
   	elsif ticking_captives?
       
       if outnumbered?
-
         bind_or_move_to_bomb
-      
-      elsif severely_wounded_with_enemies_in_room?
-        stop_to_rest
+      elsif severely_wounded?
+        rest_or_flee?
       else # not outnumbered or severely wounded.
-
-        if single_enemy?
-          if multiple_enemies_ahead?
-            @warrior.detonate!(towards_captive)
-          else
-            walk_towards(:captive)
-          end
+        if multiple_enemies_ahead?
+          @warrior.detonate!(towards_captive)
         else
           free_captives
         end
-
       end
 
     elsif next_to_warrior?(:enemy) ### none of this will happen
