@@ -20,21 +20,6 @@ class Player
 
     if previous_orders?
       enact_orders
-
-  	elsif ticking_captives?
-      
-      if outnumbered?
-        bind_or_move_to_bomb
-      elsif severely_wounded?
-        rest_or_flee?
-      else # not outnumbered or severely wounded.
-        if multiple_enemies_ahead?
-          @warrior.detonate!(towards_captive)
-        else
-          free_captives
-        end
-      end
-
     elsif next_to_warrior?(:enemy) ### none of this will happen
       engage_enemy
   	elsif hit_points_needed?

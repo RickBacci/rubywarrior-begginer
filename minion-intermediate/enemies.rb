@@ -106,14 +106,17 @@ def bind_or_move_to_bomb
   end
 end
 
-
-
 def engage_enemy
   if outnumbered?
     bind_or_move_to_bomb
-
   elsif severely_wounded?
     rest_or_flee?
+  elsif ticking_captives?
+    if multiple_enemies_ahead?
+      @warrior.detonate!(towards_captive)
+    else
+      free_captives
+    end
   else
     attack_closest_enemy
   end
