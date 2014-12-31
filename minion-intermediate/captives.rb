@@ -12,7 +12,7 @@ def towards_captive # direction set either way
     if ticking_captives?
       direction = @warrior.direction_of(square) if square.ticking?
     else 
-      direction = @warrior.direction_of(square) if !ticking_captives?
+      direction = @warrior.direction_of(square)# if !ticking_captives?
     end
   end
   direction
