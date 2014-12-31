@@ -3,11 +3,8 @@ def captives_in_room?
   listen_for_intel.include?('Captive')
 end
 
-def towards_captive # direction set either way
-  p 'towards captive needs fixed!!!!'
-  #direction = :right
-  #direction = :problem_in_towards_captive
-  direction = nil
+def towards_captive
+    direction = nil
   @warrior.listen.each do |square|
 
     next if square.to_s != 'Captive'
@@ -15,11 +12,10 @@ def towards_captive # direction set either way
     if ticking_captives?
       direction = @warrior.direction_of(square) if square.ticking?
     else 
-      #p "towards captive not ticking !!!!!!!!!!!!!!!!!!!!!!!"
       direction = @warrior.direction_of(square)
     end
   end
-  p direction
+  direction
 end
 
 def ticking_captives?
@@ -31,7 +27,6 @@ def ticking_captives?
 end
 
 def rescue_captive
-  #p 'in rescue captive!!!!!!!'
   @warrior.rescue!(towards_captive)
 end
 
