@@ -3,9 +3,7 @@ def closest_enemy
   (@directions_to_all_enemies - @bound_enemies).first
 end
 
-def outnumbered?
-  @total_enemies_in_attack_range > 1
-end
+
 
 def enemy
   next_to_warrior?(:enemy)
@@ -40,14 +38,19 @@ def bound_enemy?
   @bound_enemies.length >= 1
 end
 
+def bind_enemy(target)
+  @warrior.bind!(target)
+  @bound_enemies << target
+end
+
 def bind_closest_enemy
   @target = @direction_of_enemies_in_attack_range - [towards_captive]
 
   if @target != []
-    @warrior.bind!(@target.first)
-    @bound_enemies << @target.first
+    bind_enemy(@target.first)
   else
-    @bound_enemies = []
+    p "ever in here? ======================================================="
+    #@bound_enemies = []
     @warrior.detonate!(towards_captive)
   end
   

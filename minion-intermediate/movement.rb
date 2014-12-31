@@ -86,7 +86,13 @@ def walk_around_object
   new_direction
 end
 
-def trapped?
+# -------------------------------------------------------------------------------
+
+def outnumbered?
+  @total_enemies_in_attack_range > 1
+end
+
+def trapped? # cannot move anywhere(including previous location)
   possible_directions.each do |direction|
         next if direction == previous_location
     return false if @warrior.feel(direction).empty?
@@ -94,17 +100,22 @@ def trapped?
   true
 end
 
-def enemies_to_bind
-  @nearby_enemy_locations - [towards_captive] - @bound_enemies
-end
-
-def warrior_has_yet_to_move
-  @path_traveled.empty?
-end
-
 def move_away_to_throw_bombs
   @queue = [:bomb, :bomb, :bomb]
   @warrior.walk!(retrace_footsteps(@path_traveled.last))
   @path_traveled << retrace_footsteps(@path_traveled.last)
 end  
+
+
+def warrior_has_yet_to_move
+  @path_traveled.empty?
+end
+
+def enemies_to_bind
+  @nearby_enemy_locations - [towards_captive] - @bound_enemies
+end
+
+
+
+
 

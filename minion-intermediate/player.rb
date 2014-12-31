@@ -13,7 +13,7 @@ class Player
     @bound_enemies ||= []
     @queue ||= []
     @blocked = false if @blocked.nil?
-    @current_goal = [:ticking_captives, :captives, :enemies, :bound_enemies, :stairs]
+    # @current_goal = [:ticking_captives, :captives, :enemies, :bound_enemies, :stairs]
 
     listen_for_intel  # do not comment out!
     look_for_intel    # do not comment out!
@@ -25,30 +25,26 @@ class Player
       
       if outnumbered? && trapped?
       
-        if surrounded?
+        if warrior_has_yet_to_move
           bind_closest_enemy
         else
-          if warrior_has_yet_to_move
-            bind_closest_enemy
-          else
-            move_away_to_throw_bombs
-          end
+          move_away_to_throw_bombs
         end
+      
+      elsif severely_wounded_with_enemies_in_room?
+        stop_to_rest
       else # not outnumbered or trapped
         if single_enemy?
-          if severely_wounded_with_enemies_in_room?
-            stop_to_rest
-          elsif multiple_enemies_ahead?
+          if multiple_enemies_ahead?
             @warrior.detonate!(towards_captive)
           else
             walk_towards(:captive)
           end
-        elsif @warrior.health < 10 && enemies_in_room?
-          @warrior.rest!
         else
           free_captives
         end
       end
+
     elsif next_to_warrior?(:enemy) ### none of this will happen
       if outnumbered?              ### until captive saved!
         bind_closest_enemy
