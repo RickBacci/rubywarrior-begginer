@@ -5,8 +5,9 @@ end
 
 def towards_captive # direction set either way
   p 'towards captive needs fixed!!!!'
-  direction = :right
+  #direction = :right
   #direction = :problem_in_towards_captive
+  direction = nil
   @warrior.listen.each do |square|
 
     next if square.to_s != 'Captive'
@@ -15,11 +16,10 @@ def towards_captive # direction set either way
       direction = @warrior.direction_of(square) if square.ticking?
     else 
       #p "towards captive not ticking !!!!!!!!!!!!!!!!!!!!!!!"
-      #p square.to_s
       direction = @warrior.direction_of(square)
     end
   end
-  direction
+  p direction
 end
 
 def ticking_captives?
@@ -35,8 +35,13 @@ def rescue_captive
   @warrior.rescue!(towards_captive)
 end
 
-def found_a_captive
-  @warrior.feel(towards_captive).captive?
+def found_a_captive ### make feel_for_intel?
+  captive = nil
+
+  possible_directions.each do |direction|
+    return true if @warrior.feel(direction).captive?
+  end
+  false
 end
 
 def free_captives

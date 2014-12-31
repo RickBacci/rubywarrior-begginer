@@ -114,6 +114,7 @@ def bind_or_move_to_bomb
       bind_enemy
     end
   else
+    p 'when does this happen? -----------------------------------'
     move_away_to_throw_bombs
   end
 end

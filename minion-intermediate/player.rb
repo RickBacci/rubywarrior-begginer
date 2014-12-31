@@ -24,7 +24,7 @@ class Player
     #elsif captives_in_room?
       #engage_enemy
       #free_captives
-    elsif next_to_warrior?(:enemy) ### none of this will happen
+    elsif next_to_warrior?(:enemy)
       engage_enemy
   	elsif hit_points_needed?
       recover_from_battle
