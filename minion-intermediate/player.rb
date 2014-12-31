@@ -18,8 +18,12 @@ class Player
     listen_for_intel  # do not comment out!
     look_for_intel    # do not comment out!
 
+
     if previous_orders?
       enact_orders
+    #elsif captives_in_room?
+      #engage_enemy
+      #free_captives
     elsif next_to_warrior?(:enemy) ### none of this will happen
       engage_enemy
   	elsif hit_points_needed?
@@ -31,6 +35,7 @@ class Player
     elsif enemies_in_room?
       kill_enemies
     elsif room_clear?
+      #towards_stairs
       walk_towards(:stairs)
   	else
       p 'Warrior doing nothing'

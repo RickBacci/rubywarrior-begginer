@@ -19,15 +19,18 @@ def retrace_footsteps(direction)
   end
 end
 
+def direction_to_safety
+  @direction_to_safety
+end  
+
 def move_to_safety
   if !@path_traveled.empty?
-    direction_to_safety = retrace_footsteps(@path_traveled.last)
-    @path_traveled << direction_to_safety
-    @warrior.walk!(direction_to_safety)
+    @direction_to_safety = retrace_footsteps(@path_traveled.last)
+
+    walk_towards(:safety)
   else
-    direction_to_safety = walk_around_object
-    @path_traveled << direction_to_safety
-    @warrior.walk!(direction_to_safety)
+    @direction_to_safety = walk_around_object
+    walk_towards(:safety)
   end
 end
 
@@ -66,6 +69,9 @@ def walk_towards(object)
       @warrior.walk!(walk_around_object)
       @path_traveled << walk_around_object
     end
+  when :safety
+    @warrior.walk!(direction_to_safety)
+    @path_traveled << direction_to_safety
   else
     p 'walking in circles!'
   end
@@ -92,18 +98,18 @@ def outnumbered?
   @total_enemies_in_attack_range > 1
 end
 
-def trapped? # cannot move anywhere(including previous location)
+def trapped? # cannot move anywhere()
   possible_directions.each do |direction|
-        next if direction == previous_location
+      ###  next if direction == previous_location
     return false if @warrior.feel(direction).empty?
   end
   true
 end
 
 def move_away_to_throw_bombs
+  #p "in move away to throw bombs"
   @queue = [:bomb, :bomb, :bomb]
-  @warrior.walk!(retrace_footsteps(@path_traveled.last))
-  @path_traveled << retrace_footsteps(@path_traveled.last)
+  direction = move_to_safety unless trapped?
 end  
 
 

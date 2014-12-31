@@ -1,6 +1,6 @@
 
 def severely_wounded? 
-  enemies_in_room? && @warrior.health < 4 
+  enemies_in_room? && @warrior.health < 5 
 end
 
 def stop_to_rest

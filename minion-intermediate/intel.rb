@@ -74,25 +74,22 @@ def look_for_intel
   @direction_of_enemies_in_attack_range
 end
 
-
-
-def how_far_to(subject) # should not count enemy captives
-
-  distance = 0
-  @warrior.listen.each do |space|
-    if space.to_s == subject
-      distance = @warrior.distance_of(space)
-      #p "The #{space.to_s} is #{distance} spaces away."
-      return distance
-    end
-  end
-  distance
-end 
-
-
 def continue_bombing?
+  #@direction = :left needed for 3
+  #@direction = :forward # needed for 5
+  p 'in continue bombing!!!!!!'
+  # @path_traveled.last.each do |val|
+  #   p val
+  # end
+  if @path_traveled.empty?
+    direction = :forward
+  else
+    direction = retrace_footsteps(@path_traveled.last)
+  end
+  p "direction in continue_bombing #{direction}"
+
   spaces = []
-  @warrior.look.each do |space|
+  @warrior.look(direction).each do |space|
     spaces << space.enemy?
   end
   if spaces[0] == true || spaces[1] == true
@@ -101,7 +98,7 @@ def continue_bombing?
   false
 end
 
-def surrounded?
+def surrounded? ## this is wrong too!!!!
   (@direction_of_enemies_in_attack_range == [:forward, :left, :right]) && @path_traveled.empty?
 end
 
@@ -109,19 +106,40 @@ def previous_orders?
   !@queue.empty?
 end
 
-def enact_orders
-  if continue_bombing?
+def enact_orders # needs directins sent
+
+  if severely_wounded?
+    rest_or_flee?
+  elsif continue_bombing?
+
     action = @queue.shift
     if action == :bomb
-      @warrior.detonate!
+      if captives_in_room?
+        @warrior.detonate!(towards_captive)
+      else
+        @warrior.detonate!(towards_stairs)
+      end
     else
       p 'error in queue.'
     end
   else
+    p 'this is wrong!!!!!!!!!!!!'
     @queue = []
-    @warrior.walk!
-    @path_traveled << :forward
+    #@warrior.walk!(:left)
+    #@path_traveled << :left
   end
 end
 
+#def how_far_to(subject) # should not count enemy captives
+
+#   distance = 0
+#   @warrior.listen.each do |space|
+#     if space.to_s == subject
+#       distance = @warrior.distance_of(space)
+#       #p "The #{space.to_s} is #{distance} spaces away."
+#       return distance
+#     end
+#   end
+#   distance
+# end 
 
