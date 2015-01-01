@@ -41,9 +41,9 @@ def found_a_captive ### make feel_for_intel?
       return true if captive && ticking
     else 
       return true if captive
-    end    
+    end 
+    return false   
   end
-  false
 end
 
 def free_captives

@@ -19,11 +19,10 @@ class Player
     look_for_intel    # do not comment out!
 
 
+    p found_a_captive
+    
     if previous_orders?
       enact_orders
-    #elsif captives_in_room?
-      #engage_enemy
-      #free_captives
     elsif next_to_warrior?(:enemy)
       engage_enemy
   	elsif hit_points_needed?
