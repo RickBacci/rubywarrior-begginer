@@ -15,7 +15,7 @@ def towards_captive
       direction = @warrior.direction_of(square)
     end
   end
-  direction
+  p direction
 end
 
 def ticking_captives?
@@ -31,10 +31,17 @@ def rescue_captive
 end
 
 def found_a_captive ### make feel_for_intel?
-  captive = nil
 
   possible_directions.each do |direction|
-    return true if @warrior.feel(direction).captive?
+
+    captive = @warrior.feel(direction).captive?
+    ticking = @warrior.feel(direction).ticking?
+
+    if ticking_captives?
+      return true if captive && ticking
+    else 
+      return true if captive
+    end    
   end
   false
 end

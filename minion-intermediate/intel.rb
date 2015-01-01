@@ -75,12 +75,7 @@ def look_for_intel
 end
 
 def continue_bombing?
-  #@direction = :left needed for 3
-  #@direction = :forward # needed for 5
-  p 'in continue bombing!!!!!!'
-  # @path_traveled.last.each do |val|
-  #   p val
-  # end
+  direction = nil
   if @path_traveled.empty?
     direction = :forward
   else
@@ -123,10 +118,10 @@ def enact_orders # needs directins sent
       p 'error in queue.'
     end
   else
-    p 'this is wrong!!!!!!!!!!!!'
+    p 'in enact orders -----------------------------------'
     @queue = []
-    #@warrior.walk!(:left)
-    #@path_traveled << :left
+    #@warrior.walk!
+    #@path_traveled << :forward
   end
 end
 
