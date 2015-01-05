@@ -40,7 +40,7 @@ end
 
 
 def bind_enemy
-  #p 'in bind enemy!!!!!!!!!!!!!!!!!!!!!!!'
+  p 'in bind enemy!!!!!!!!!!!!!!!!!!!!!!!'
   @target = @direction_of_enemies_in_attack_range - [towards_captive]
 
   @warrior.bind!(@target.first)
@@ -100,17 +100,19 @@ def attack_enemy
 end
 
 def bind_or_move_to_bomb
-  #p 'in bind or move to bomb ---------------------------'
+  p 'in bind or move to bomb ---------------------------'
   if outnumbered?
     if found_a_captive
       rescue_captive
-    elsif !single_enemy?
+    elsif single_enemy? == false
       if trapped?
+        #p 'about to bind==========================='
         bind_enemy
       else
         move_away_to_throw_bombs
       end
     else
+      #p 'binding here ==================================='
       bind_enemy
     end
   else
@@ -129,6 +131,7 @@ def engage_enemy
     if multiple_enemies_ahead?
       @warrior.detonate!(towards_captive)
     else
+      p 'engage ememy else'
       free_captives
     end
   else

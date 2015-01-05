@@ -1,7 +1,7 @@
 
 
 def possible_directions
-  [:forward, :backward, :left, :right]
+  [:forward, :right, :backward, :left]
 end
 
 def retrace_footsteps(direction)
@@ -29,8 +29,8 @@ def move_to_safety
 
     walk_towards(:safety)
   else
-    p "move to safety --------------------------------------"
-    p @direction_to_safety = walk_around_object
+    #p "move to safety --------------------------------------"
+    @direction_to_safety = walk_around_object
     walk_towards(:safety)
   end
 end
@@ -101,8 +101,16 @@ def outnumbered?
 end
 
 def trapped?
+  #p 'in trapped..............'
+
   possible_directions.each do |direction|
-    return false if @warrior.feel(direction).empty?
+    if found_a_captive
+      #p 'captive found!'
+      return false
+    else
+      #p 'place to run'
+      return false if @warrior.feel(direction).empty?
+    end
   end
   true
 end

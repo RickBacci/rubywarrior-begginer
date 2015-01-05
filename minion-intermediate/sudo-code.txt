@@ -66,5 +66,10 @@ What are the directions on which the warrior will go?
 
 
 
+level 3
 
+Warrior is surrounded by 3 enemies and 1 captive. Warrior needs to first rescue the captive. Now the warrior is no longer surrounded, and can move out of attack range of the sludge, and throw bombs.
 
+level 9 
+
+Warrior is surrounded by 3 enemies and 1 wall. In this case the warrior needs to bind some enemies to make it a one on one fight. Then the warrior can throw bombs to kill the enemy quicker. The warrior can advanced towards the ticking captive once an enemy is killed. If the warrior advances and is surrounded on 3 sides, the warrior should move back and throw more bombs.

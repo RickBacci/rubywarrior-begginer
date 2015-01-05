@@ -81,7 +81,7 @@ def continue_bombing?
   else
     direction = retrace_footsteps(@path_traveled.last)
   end
-  p "direction in continue_bombing #{direction}"
+  #p "direction in continue_bombing #{direction}"
 
   spaces = []
   @warrior.look(direction).each do |space|
@@ -101,12 +101,14 @@ def previous_orders?
   !@queue.empty?
 end
 
-def enact_orders # needs directins sent
+def enact_orders
+  # bombing directions will only pass
+  # for specific cases in this level
+  # needs more intelligence.
 
   if severely_wounded?
     rest_or_flee?
   elsif continue_bombing?
-
     action = @queue.shift
     if action == :bomb
       if captives_in_room?
@@ -118,11 +120,26 @@ def enact_orders # needs directins sent
       p 'error in queue.'
     end
   else
-    p 'in enact orders -----------------------------------'
+    #p 'in enact orders -----------------------------------'
     @queue = []
     #@warrior.walk!
     #@path_traveled << :forward
   end
+end
+
+def feel_for_intel
+  @around_warrior = {forward: '', right: '', backward: '', left: ''}
+
+  possible_directions.each do |direction|
+
+    square = @warrior.feel(direction)
+    
+    direction = @warrior.direction_of(square)
+    string = square.to_s
+
+    @around_warrior[direction] = string
+  end
+  @around_warrior
 end
 
 #def how_far_to(subject) # should not count enemy captives

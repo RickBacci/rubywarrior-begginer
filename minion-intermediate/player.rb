@@ -15,11 +15,14 @@ class Player
     @blocked = false if @blocked.nil?
     # @current_goal = [:ticking_captives, :captives, :enemies, :bound_enemies, :stairs]
 
-    listen_for_intel  # do not comment out!
-    look_for_intel    # do not comment out!
+    p listen_for_intel  # do not comment out!
+    p look_for_intel    # do not comment out!
+    p feel_for_intel    # do not comment out!
 
-
-    p found_a_captive
+    # p @bound_enemies
+    
+    # p found_a_captive
+    p @around_warrior.has_value?("wall")
     
     if previous_orders?
       enact_orders
