@@ -35,9 +35,7 @@ def move_to_safety
   end
 end
 
-def towards_stairs
-  @warrior.direction_of_stairs
-end
+
 
 def path_clear?(direction)
   @warrior.feel(direction).empty?
