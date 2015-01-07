@@ -20,6 +20,7 @@ class Player
     @possible_objectives ||= [:ticking_captive, :captive,
                             :enemy_threat,:enemy_bound]#,
                             #:stairs]
+    #@objectives ||= []
     @objectives ||= []
     @stairs ||= false
     @warrior_health ||= 20
@@ -29,6 +30,7 @@ class Player
   def play_turn(warrior)
   	@warrior = warrior
 
+    #p @objectives
 
     def count_objects
       @warrior.listen.size
@@ -40,8 +42,10 @@ class Player
     # this will need more logic when multiple enemies are killed.
 
     if count_objects < @objectives.size
-      @warrior_hears.shift
-      @objectives.shift
+      @warrior_hears = nil
+      #@warrior_hears.shift
+      #@objectives.shift
+      @objectives = []
     end
 
     def create_objects
@@ -71,14 +75,7 @@ class Player
     #   warrior_listens.empty?
     # end
 
-    def towards_stairs
-      @warrior.direction_of_stairs
-    end
-
-    def next_objective
-      @objectives.first
-    end
-
+    
 
     
     
@@ -125,6 +122,17 @@ class Player
 
     build_objectives if @objectives.empty?
 
+
+
+
+    def towards_stairs
+      @warrior.direction_of_stairs
+    end
+
+    def next_objective
+      @objectives.first
+    end
+
     def objectives_accomplished
       @objectives.empty?
     end
@@ -170,8 +178,42 @@ class Player
     end
 
     def walk_towards_objective
-      @warrior.walk!(towards_objective)
+      if @warrior.feel(towards_objective).empty? 
+        @warrior.walk!(towards_objective)
+        @path_traveled << towards_objective
+      else # something blocking path
+        @warrior.walk!(possible_paths_towards_objective.first)
+        @path_traveled << possible_paths_towards_objective.first
+      end
     end
+
+    def possible_paths_towards_objective
+      possible_directions = []
+      warrior_feels.each do |direction, space|
+        possible_directions << direction if space == 'nothing'
+      end
+      possible_directions - [previous_location]
+    end
+
+    def previous_location
+      retrace_footsteps(@path_traveled.last)
+    end
+
+    def retrace_footsteps(direction)
+      case direction
+      when :forward
+        :backward
+      when :backward
+        :forward
+      when :left
+        :right
+      when :right
+        :left
+      else
+        nil
+      end
+    end
+
 
     def blow_stuff_up
       @warrior.detonate!(towards_objective)
@@ -205,6 +247,7 @@ class Player
 
     def warrior_retreat
       @warrior.walk!(direction_to_retreat)
+      @path_traveled << direction_to_retreat
     end
 
     def three_front_war
@@ -222,15 +265,22 @@ class Player
     def perfect_bomb_location
       total_enemies = 0
       @warrior_hears.each do |space|
-        total_enemies += 1 if space.distance == 2
+        total_enemies += 1 if space.distance == 2 || space.distance == 1
       end
-      return true if total_enemies == 3
+      # return true if total_enemies == 3
+      return true if total_enemies > 1
+
       false
     end
 
     def look_for_direction
       @warrior_sees.each do |direction, squares|
-        return direction if squares[1][0] == 'Thick Sludge' || squares[1][0] == 'Sludge'
+
+        if squares[0][0] == 'Thick Sludge' || squares[0][0] == 'Sludge'
+          return direction 
+        elsif squares[1][0] == 'Thick Sludge' || squares[1][0] == 'Sludge'
+          return direction
+        end
       end
     end
 
@@ -242,22 +292,45 @@ class Player
       end
       total_enemies
     end
-    
-    #p count_enemies_in_range
 
+    def any_captives?
+      @warrior_hears.each { |square| return true if square.captive }
+      false
+    end
+    # p @warrior_sees
+    # p warrior_feels
+    
+    #p
+    # count_enemies_in_range
+    p next_objective.ticking unless next_objective.nil?
+    #p @path_traveled
+    #p warrior_feels
+    p possible_paths_towards_objective
     #p next_objective.distance unless next_objective.nil?
    #p warrior_feels
    puts
     if objectives_accomplished
       walk_to_stairs
-    elsif next_to_captive
-      rescue_captive
+    elsif any_captives?
+      if next_objective.ticking
+        if next_to_captive
+          rescue_captive
+        else
+          walk_towards_objective
+        end
+      elsif next_to_captive
+        rescue_captive
+      else
+        walk_towards_objective
+      end
     elsif three_front_war
       warrior_retreat
-    elsif perfect_bomb_location
-      @warrior.detonate!(look_for_direction)
+
     elsif warrior_wounded && safe_to_rest
       warrior_rest
+    elsif perfect_bomb_location
+      @warrior.detonate!(look_for_direction)
+    
     elsif warrior_critical
       warrior_retreat
     elsif danger_far

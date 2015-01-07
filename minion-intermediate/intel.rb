@@ -133,7 +133,9 @@ def warrior_feels
   possible_directions.each do |direction|
 
     square = @warrior.feel(direction).to_s
-
+    if square == 'nothing'
+      square = 'stairs' if @warrior.feel(direction).stairs?
+    end
     @warrior_feels[direction] = square
   end
   @warrior_feels
@@ -162,7 +164,7 @@ def warrior_listens # updates values of everything in room
   name = square.to_s
 
   next if space.nil? 
-  
+
           space[:name] = square.to_s
      space[:direction] = @warrior.direction_of(square)
       space[:distance] = @warrior.distance_of(square)
