@@ -159,11 +159,12 @@ def warrior_looks
 end
 
 def warrior_listens # updates values of everything in room
+  p 'in here at start of every turn...................................'
   @warrior.listen.each_with_index do |square, index|
   space = @warrior_hears[index]
   name = square.to_s
 
-  next if space.nil? 
+  # next if space.nil? 
 
           space[:name] = square.to_s
      space[:direction] = @warrior.direction_of(square)
@@ -171,9 +172,12 @@ def warrior_listens # updates values of everything in room
        space[:ticking] = square.ticking?
          space[:enemy] = true if name == 'Sludge' || name == 'Thick Sludge'
        space[:captive] = square.captive? ? true : false
-   space[:enemy_bound] = (space[:enemy] && space[:captive]) ? true : false
-  space[:enemy_threat] = square.enemy?
-      
+    #if space[:enemy_threat].nil?
+       space[:enemy_bound] = ((space[:enemy] && space[:captive]) ? true : false) 
+    #end
+    #if space[:enemy_threat].nil?
+      space[:enemy_threat] = square.enemy?
+   # end
   end
   #p @warrior_hears.each { |v| puts "Name: #{v.name} counted: #{v.counted}" }
   @warrior_hears

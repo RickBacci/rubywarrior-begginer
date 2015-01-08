@@ -40,8 +40,12 @@ class Player
     # p "Last turn there were #{@objectives.size} objectives"
 
     # this will need more logic when multiple enemies are killed.
-
-    if count_objects < @objectives.size
+    #p 'checks'
+    #p count_objects
+    #p @objectives.size
+    #p @objectives
+   
+    if count_objects < @objectives.size || count_objects == 0
       @warrior_hears = nil
       #@warrior_hears.shift
       #@objectives.shift
@@ -50,7 +54,7 @@ class Player
 
     def create_objects
       @warrior_hears = []
-      p "this only happens once !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+      p "this only happens when new objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       @warrior.listen.size.times do
         @warrior_hears << Space.new
       end
@@ -94,7 +98,8 @@ class Player
               @objectives << space
             end
           when :captive
-            if space.captive && space.counted.nil?
+            if (space.captive && space.counted.nil?) && !space.enemy
+              p 'are we still labeling captives?'
               space.counted = true
               # @objectives << :captive 
               @objectives << space
@@ -108,7 +113,7 @@ class Player
 
             end
           when :enemy_bound
-            # 
+            p "are we seeing bound enemies?"
           # when :stairs
           #   @objectives << :stairs unless @stairs
           #   @stairs = true
@@ -134,15 +139,16 @@ class Player
     end
 
     def objectives_accomplished
-      @objectives.empty?
+      count_objects == 0
+      #@objectives.empty?
     end
 
-    p "remaining objectives"
-    puts
-    @objectives.each do |s|
-      puts s.name
-    end
-    puts
+    # p "remaining objectives"
+    # puts
+    # @objectives.each do |s|
+    #   puts s.name
+    # end
+    # puts
 
     # p @total_objectives = @warrior_hears.length
     # p @warrior_feels.has_value?("wall")
@@ -178,7 +184,9 @@ class Player
     end
 
     def walk_towards_objective
-      if @warrior.feel(towards_objective).empty? 
+
+      #p 'in walk towards objective'
+      if @warrior.feel(towards_objective).empty? && !@warrior.feel(towards_objective).stairs?
         @warrior.walk!(towards_objective)
         @path_traveled << towards_objective
       else # something blocking path
@@ -224,7 +232,7 @@ class Player
     end
 
     def warrior_critical
-      @warrior_health <= 5
+      @warrior.health <= 4
     end
 
     def warrior_wounded
@@ -264,11 +272,15 @@ class Player
 
     def perfect_bomb_location
       total_enemies = 0
+      captives_near = false
       @warrior_hears.each do |space|
-        total_enemies += 1 if space.distance == 2 || space.distance == 1
+        if space.enemy_threat
+          total_enemies += 1 if space.distance == 2 || space.distance == 1
+        end
+        captives_near = true if (space.captive && space.distance <=2) && !space.enemy
       end
       # return true if total_enemies == 3
-      return true if total_enemies > 1
+      return true if total_enemies > 1 && captives_near == false
 
       false
     end
@@ -280,8 +292,11 @@ class Player
           return direction 
         elsif squares[1][0] == 'Thick Sludge' || squares[1][0] == 'Sludge'
           return direction
+        else
+          p 'in look_for_direction'
         end
       end
+      towards_objective
     end
 
     def count_enemies_in_range
@@ -290,11 +305,68 @@ class Player
       warrior_feels.each do |direction, space|
         total_enemies += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
       end
+      
       total_enemies
     end
 
     def any_captives?
-      @warrior_hears.each { |square| return true if square.captive }
+      @warrior_hears.each { |square| return true if (square.captive && !square.enemy) }
+      false
+    end
+
+    def no_where_to_move
+      warrior_feels.each do |direction, space|
+        return false if space == 'nothing'
+      end
+      true
+    end
+
+
+    def bind_enemies
+      action = false
+      @warrior_hears.each do |space|
+        if (space.enemy_threat && (space.direction != towards_objective)) && space.distance == 1
+          unless action
+            @warrior.bind!(space.direction)
+            space.enemy_threat = false
+            space.enemy_bound = true
+            action = true
+          end
+        end
+      end
+    end
+
+
+    def count_enemies_in_range2
+      total_enemies = 0
+
+      # warrior_feels.each do |direction, space|
+      #   total_enemies += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
+      # end
+      @warrior_hears.each do |space|
+        next if space.distance != 1
+        total_enemies += 1 if space.enemy_threat && space.distance = 1
+      end
+      total_enemies
+    end
+
+    def bound_enemies?
+      @warrior_hears.each { |square| return true if (square.captive && square.enemy) }
+      false
+    end
+
+    def bound_enemy_close
+      unless next_objective.nil?
+        (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
+      end
+    end
+
+    def one_enemy_left?
+      total_enemies = 0
+      @warrior_hears.each do |space|
+        total_enemies += 1 if space.enemy
+      end
+      return true if total_enemies == 1
       false
     end
     # p @warrior_sees
@@ -302,16 +374,52 @@ class Player
     
     #p
     # count_enemies_in_range
-    p next_objective.ticking unless next_objective.nil?
+    #p next_objective.ticking unless next_objective.nil?
     #p @path_traveled
     #p warrior_feels
-    p possible_paths_towards_objective
+    #p towards_objective
+    #p possible_paths_towards_objective
+    #p perfect_bomb_location
     #p next_objective.distance unless next_objective.nil?
    #p warrior_feels
+   #p objectives_accomplished
+   #p next_objective.direction unless next_objective.nil?
+   #p perfect_bomb_location
+   #p count_enemies_in_range
+   # p @objectives
+   # p 'captives'
+   # p any_captives?
+   # p 'bound enemies'
+   # p bound_enemies?
+   # p bound_enemy_close
+
+   # p danger_close
+   # p danger_far
+   # p towards_objective
+
    puts
     if objectives_accomplished
+      p 'in right place'
       walk_to_stairs
+    elsif no_where_to_move
+      if next_to_captive
+        rescue_captive
+      elsif count_enemies_in_range2 > 1
+        bind_enemies
+      else
+        blow_stuff_up
+      end
+    elsif three_front_war
+      warrior_retreat
+    elsif perfect_bomb_location
+      if warrior_critical
+        warrior_rest
+      else
+        p 'perfect_bomb_location is true'
+        @warrior.detonate!(look_for_direction)
+      end
     elsif any_captives?
+      p 'are we here'
       if next_objective.ticking
         if next_to_captive
           rescue_captive
@@ -320,16 +428,18 @@ class Player
         end
       elsif next_to_captive
         rescue_captive
+      elsif one_enemy_left? && count_enemies_in_range == 1
+        attack_enemy
       else
         walk_towards_objective
       end
-    elsif three_front_war
-      warrior_retreat
+    # elsif three_front_war
+    #   warrior_retreat
 
     elsif warrior_wounded && safe_to_rest
       warrior_rest
-    elsif perfect_bomb_location
-      @warrior.detonate!(look_for_direction)
+    # elsif perfect_bomb_location
+    #   @warrior.detonate!(look_for_direction)
     
     elsif warrior_critical
       warrior_retreat
@@ -345,11 +455,18 @@ class Player
       else
         attack_enemy
       end
+    elsif bound_enemies?
+      if bound_enemy_close
+        attack_enemy
+      else
+        walk_towards_objective
+      end
     else
       walk_towards_objective
     end
       
     @warrior_health = warrior.health
+
 
 
 
