@@ -441,7 +441,7 @@ class Player
     # elsif perfect_bomb_location
     #   @warrior.detonate!(look_for_direction)
     
-    elsif warrior_critical
+    elsif warrior_critical && !one_enemy_left?
       warrior_retreat
     elsif danger_far
       if path_clear
