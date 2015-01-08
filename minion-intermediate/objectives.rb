@@ -44,3 +44,11 @@ def build_objectives
   @objectives
 end
 
+def next_objective
+  @objectives.first
+end
+
+def towards_objective
+  next_objective.direction
+end
+

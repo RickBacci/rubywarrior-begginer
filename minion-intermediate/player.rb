@@ -1,15 +1,9 @@
 require 'intel'
 require 'objects'
 require 'objectives'
-require 'health'
-require 'enemies'
-require 'captives'
-require 'movement'
+require 'warrior_actions'
 require 'debugging'
 
-Space = Struct.new(:name, :direction, :distance,
- :ticking, :enemy_threat, :captive,
- :enemy_bound, :enemy, :counted)
 
 class Player
 
@@ -41,17 +35,13 @@ class Player
       @warrior.direction_of_stairs
     end
 
-    def next_objective
-      @objectives.first
-    end
+    
 
     def objectives_accomplished
       count_objects == 0
     end
 
-    def towards_objective
-      next_objective.direction
-    end
+    
 
     def danger_close
       next_objective.enemy_threat && next_objective.distance == 1
