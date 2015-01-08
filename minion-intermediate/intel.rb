@@ -1,9 +1,9 @@
 
-def possible_directions
-  record_action
+# def possible_directions
+#   record_action
 
-  [:forward, :right, :backward, :left]
-end
+#   [:forward, :right, :backward, :left]
+# end
 
 
 def towards_stairs

@@ -4,7 +4,7 @@ def warrior_looks
 
   warrior_sees = {}
   
-  possible_directions.each do |direction|
+  @possible_directions.each do |direction|
 
     squares = []
     @warrior.look(direction).each do |square|

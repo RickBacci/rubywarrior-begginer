@@ -6,12 +6,6 @@ def warrior_walk(direction)
   @path_traveled << direction
 end
 
-def walk_to_stairs
-  record_action
-
-  warrior_walk(towards_stairs)
-end
-
 def rescue_captive
   record_action
 
@@ -40,12 +34,6 @@ def bind_enemy(direction)
   record_action
 
   @warrior.bind!(direction)
-end
-
-def warrior_retreat
-  record_action
-      
-  warrior_walk(direction_to_retreat)
 end
 
 def walk_towards_objective

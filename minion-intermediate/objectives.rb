@@ -11,7 +11,8 @@ def build_objectives
   record_action
 
   @possible_objectives.each do |objective|
-    warrior_listens.each_with_index do |space, index|
+    @warrior_hears.each_with_index do |space, index|
+    #warrior_listens.each_with_index do |space, index|
 
       case objective
 

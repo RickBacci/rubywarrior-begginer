@@ -3,7 +3,7 @@ def warrior_feels
   record_action
 
   warrior_feels = {}
-  possible_directions.each do |direction|
+  @possible_directions.each do |direction|
 
     square = @warrior.feel(direction).to_s
     square = 'stairs' if @warrior.feel(direction).stairs?

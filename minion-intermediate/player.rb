@@ -15,6 +15,7 @@ class Player
 
   def initialize
     @possible_objectives ||= [:ticking_captive, :captive, :enemy_threat,:enemy_bound]
+    @possible_directions = [:forward, :right, :backward, :left]
     @path_traveled ||= []
     @objectives = []
     @stairs ||= false
@@ -32,6 +33,9 @@ class Player
 
     reset_objectives
     create_objects
+
+    warrior_listens
+
     build_objectives
 
     # debugging
@@ -53,7 +57,8 @@ class Player
 
     elsif three_front_war
 
-      warrior_retreat
+      warrior_walk(direction_to_retreat)
+      #warrior_retreat
 
     elsif perfect_bomb_location
 
@@ -85,7 +90,8 @@ class Player
 
     elsif warrior_critical && !one_enemy_left?
 
-      warrior_retreat
+      warrior_walk(direction_to_retreat)
+      #warrior_retreat
 
     elsif danger_far
 
