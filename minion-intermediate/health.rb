@@ -1,12 +1,4 @@
 
-def severely_wounded? 
-  enemies_in_room? && @warrior.health < 5 
-end
-
-def stop_to_rest
-  @warrior.rest!
-end
-
 def hit_points_needed?
   # battle with Think Sludge requires 15hp
   # battle with Sludge requires 9hp.

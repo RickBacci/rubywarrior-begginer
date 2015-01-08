@@ -1,29 +1,31 @@
+# p @warrior_sees
+# p warrior_feels
 
-# p "direction of all enemies: #{@directions_to_all_enemies}"
-# p "direction to captive locations: #{@direction_to_captive_locations}"
-# p "total enemies in attack range: #{@total_enemies_in_attack_range}"
-# p "direction of enemies in attack range: #{@direction_of_enemies_in_attack_range}"
-# p "trapped? #{trapped?}"
-# p "ticking captives: #{ticking_captives?}"
-# p "bound enemies: #{@bound_enemies}"
-# p "multiple enemies ahead: #{multiple_enemies_ahead?}"
-# p "direction to captive: #{towards_captive}"
-# p "captive in danger: #{@captive_in_danger}"
-# p "outnumbered: #{outnumbered?}"
-# p "path to captives blocked: #{path_to_captives_blocked?}"
-# p "path clear towards captive: #{path_clear?(towards_captive)}"
-# p "warrior health #{@warrior.health}"
-# p "path traveled last #{@path_traveled.last}"
-# p "serverely wounded: #{severely_wounded?}"
-# p look_for_enemies_towards_captives
-# p "distance to captive #{how_far_to('Captive')}"
-# p too_close_to_captive_for_bombs('Captive')
-# p @warrior.health
-# p "this is the path_traveled #{@path_traveled}"
-# p "this is the queue #{@queue}"
-# p "continue bombing? #{continue_bombing?}"
+# p count_enemies_in_range
+# p next_objective.ticking unless next_objective.nil?
+# p @path_traveled
+# p warrior_feels
+# p towards_objective
+# p possible_paths_towards_objective
+# p perfect_bomb_location
+# p next_objective.distance unless next_objective.nil?
+# p warrior_feels
+# p objectives_accomplished
+# p next_objective.direction unless next_objective.nil?
+# p perfect_bomb_location
+# p count_enemies_in_range
+# p @objectives
+# p 'captives'
+# p any_captives?
+# p 'bound enemies'
+# p bound_enemies?
+# p bound_enemy_close
 
-# p @directions_to_all_enemies
-# p "enemies_in_room #{enemies_in_room?}"
+# p danger_close
+# p danger_far
+# p towards_objective
 
-     
+# p "Direction to stairs: #{@warrior.direction_of_stairs}"
+# puts
+
+
