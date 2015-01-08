@@ -14,12 +14,12 @@ class Player
 
   def initialize
     @path_traveled ||= []
-    @bound_enemies ||= []
-    @queue ||= []
-    @blocked = false if @blocked.nil?
+    # @bound_enemies ||= []
+    # @queue ||= []
+    # @blocked = false if @blocked.nil?
     @possible_objectives ||= [:ticking_captive, :captive,
-                            :enemy_threat,:enemy_bound]#,
-                            #:stairs]
+                            :enemy_threat,:enemy_bound,
+                            :stairs]
     @objectives ||= []
     @stairs ||= false
     @warrior_health ||= 20
@@ -53,7 +53,7 @@ class Player
 
     create_objects if @warrior_hears.nil?
 
-    warrior_feels       # do not comment out!
+    #warrior_feels       # do not comment out!
     warrior_looks       # do not comment out!
     warrior_listens     # do not comment out!
     # puts
@@ -99,8 +99,6 @@ class Player
     end
 
     build_objectives if @objectives.empty?
-
-
 
 
     def towards_stairs
