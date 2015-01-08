@@ -1,105 +1,41 @@
+require 'intel'
+require 'objects'
+require 'objectives'
 require 'health'
 require 'enemies'
 require 'captives'
-require 'intel'
 require 'movement'
 require 'debugging'
-require 'space'
 
 Space = Struct.new(:name, :direction, :distance,
-                   :ticking, :enemy_threat, :captive,
-                   :enemy_bound, :enemy, :counted)
+ :ticking, :enemy_threat, :captive,
+ :enemy_bound, :enemy, :counted)
 
 class Player
 
   def initialize
     @path_traveled ||= []
-    # @bound_enemies ||= []
-    # @queue ||= []
-    # @blocked = false if @blocked.nil?
+    
     @possible_objectives ||= [:ticking_captive, :captive,
-                            :enemy_threat,:enemy_bound,
-                            :stairs]
-    @objectives ||= []
-    @stairs ||= false
-    @warrior_health ||= 20
-  end
-
-
-  def play_turn(warrior)
-  	@warrior = warrior
-
-
-    def count_objects
-      @warrior.listen.size
-    end
-
-    # p "There are #{count_objects} objects in the room"
-    # p "Last turn there were #{@objectives.size} objectives"
-   
-    if count_objects < @objectives.size
-      @warrior_hears = nil
+      :enemy_threat,:enemy_bound]
       @objectives = []
+      @stairs ||= false
+      @warrior_health ||= 20
     end
 
-    def create_objects
-      p "this only happens when new objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-      @warrior_hears = []
-      @warrior.listen.size.times do
-        @warrior_hears << Space.new
-      end
-      @warrior_hears
-    end
 
-    create_objects if @warrior_hears.nil?
+    def play_turn(warrior)
+      @warrior = warrior
 
-    #warrior_feels       # do not comment out!
-    warrior_looks       # do not comment out!
-    warrior_listens     # do not comment out!
-    # puts
-    what_warrior_hears
-    # puts
 
-    def build_objectives
-      
-      @possible_objectives.each do |objective|
-        @warrior_hears.each_with_index do |space, index|
-        
-          case objective
+      reset_objectives
+      create_objects
+      build_objectives
 
-          when :ticking_captive
-            if space.ticking && space.counted.nil?
-              space.counted = true
-              @objectives << space
-            end
-          when :captive
-            if (space.captive && space.counted.nil?) && !space.enemy
-              space.counted = true
-              @objectives << space
-            end
-          when :enemy_threat
-            if space.enemy_threat && space.counted.nil?
-              space.counted = true
-              @objectives << space
-            end
-          when :enemy_bound
-            if (space.captive && space.counted.nil?) && space.enemy
-              space.counted = true
-              @objectives << space
-            end
-          when :stairs # not sure if this is doing anything
-            @objectives << :stairs unless @stairs
-            @stairs = true
-          else
-            p 'Error in build_objectives!'
-          end
-        end
-      end
-      @objectives
-    end
-
-    build_objectives if @objectives.empty?
-
+      # debugging
+      # what_warrior_hears
+    
+  
 
     def towards_stairs
       @warrior.direction_of_stairs
@@ -143,7 +79,6 @@ class Player
 
     def walk_towards_objective
 
-      #p 'in walk towards objective'
       if @warrior.feel(towards_objective).empty? && !@warrior.feel(towards_objective).stairs?
         @warrior.walk!(towards_objective)
         @path_traveled << towards_objective
@@ -236,7 +171,8 @@ class Player
     end
 
     def look_for_direction
-      @warrior_sees.each do |direction, squares|
+      warrior_looks.each do |direction, squares|
+      #@warrior_sees.each do |direction, squares|
 
         if squares[0][0] == 'Thick Sludge' || squares[0][0] == 'Sludge'
           return direction 
@@ -317,7 +253,7 @@ class Player
       return true if total_enemies == 1
       false
     end
- 
+
 
     if objectives_accomplished
       walk_to_stairs
