@@ -1,12 +1,14 @@
 
 def reset_objectives
-  if count_objects < @objectives.size
+  if @warrior.listen.size < @objectives.size
+    record_action
     @warrior_hears = nil
     @objectives = []
   end
 end
 
 def build_objectives
+  record_action
 
   @possible_objectives.each do |objective|
     warrior_listens.each_with_index do |space, index|
@@ -33,22 +35,29 @@ def build_objectives
           space.counted = true
           @objectives << space
         end
-      # when :stairs # not sure if this is doing anything
-      #   @objectives << :stairs unless @stairs
-      #   @stairs = true
       else
-        p 'Error in build_objectives!'
-      end
+      p 'Error in build_objectives!'
     end
   end
-  @objectives
+end
+@objectives
 end
 
 def next_objective
+  record_action
+
   @objectives.first
 end
 
 def towards_objective
+  record_action
+
   next_objective.direction
+end
+
+def objectives_accomplished
+  record_action
+
+  @warrior.listen.size == 0
 end
 

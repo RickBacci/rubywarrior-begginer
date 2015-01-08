@@ -1,52 +1,75 @@
 
 def possible_directions
+  record_action
+
   [:forward, :right, :backward, :left]
 end
 
-def warrior_feels
-  warrior_feels = {}
-  possible_directions.each do |direction|
 
-    square = @warrior.feel(direction).to_s
-    square = 'stairs' if @warrior.feel(direction).stairs?
+def towards_stairs
+  record_action
 
-    warrior_feels[direction] = square
-  end
-  warrior_feels
-end
-
-def warrior_looks
-  warrior_sees = {}
- 
-  possible_directions.each do |direction|
-
-    squares = []
-    @warrior.look(direction).each do |square|
-      distance = @warrior.distance_of(square)
-      squares << [square.to_s, distance]
-    end
-
-    warrior_sees[direction] = squares
-  end
-  warrior_sees
-end
-
-def warrior_listens # updates values of everything in room
-  @warrior.listen.each_with_index do |square, index|
-  space = @warrior_hears[index]
-  name = square.to_s
-
-
-          space[:name] = square.to_s
-     space[:direction] = @warrior.direction_of(square)
-      space[:distance] = @warrior.distance_of(square)
-       space[:ticking] = square.ticking?
-         space[:enemy] = true if name == 'Sludge' || name == 'Thick Sludge'
-       space[:captive] = square.captive? ? true : false
-   space[:enemy_bound] = ((space[:enemy] && space[:captive]) ? true : false) 
-  space[:enemy_threat] = square.enemy?
-  end
-  @warrior_hears
+  @warrior.direction_of_stairs
 end
 
 
+def danger_close
+  record_action
+
+  next_objective.enemy_threat && next_objective.distance == 1
+end
+
+
+def next_to_captive
+  record_action
+
+  next_objective.captive && next_objective.distance == 1
+end
+
+
+def danger_far
+  record_action
+
+  next_objective.enemy_threat && next_objective.distance > 1
+end
+    
+
+def retrace_footsteps(direction)
+  record_action
+
+  return :forward if direction == :backward
+  return :backward if direction == :forward
+  return :left if direction == :right
+  return :right if direction == :left
+  nil
+end
+
+
+def previous_location
+  record_action
+
+  retrace_footsteps(@path_traveled.last)
+end
+
+
+def warrior_critical
+  record_action
+
+  @warrior.health <= 4
+end
+
+
+def warrior_wounded
+  record_action
+
+  @warrior.health < 13
+end
+
+
+def bound_enemy_close
+  record_action
+
+  unless next_objective.nil?
+    (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
+  end
+end

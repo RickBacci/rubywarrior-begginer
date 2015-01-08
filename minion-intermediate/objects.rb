@@ -1,19 +1,17 @@
 Space = Struct.new(:name, :direction, :distance,
- :ticking, :enemy_threat, :captive,
- :enemy_bound, :enemy, :counted)
-
-def count_objects
-  @warrior.listen.size
-end
+                   :ticking, :enemy_threat, :captive,
+                   :enemy_bound, :enemy, :counted)
 
 def create_objects
+  record_action
+
   if @warrior_hears.nil?
-    p "this only happens when new objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    p "New objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
     @warrior_hears = [] 
     @warrior.listen.size.times do
       @warrior_hears << Space.new
     end
-    @warrior_hears
   end
+  @warrior_hears
 end

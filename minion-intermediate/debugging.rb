@@ -1,5 +1,6 @@
 
 def debugging
+  @debugging = true
   puts "There are #{count_objects} objects in the room"
   puts "Last turn there were #{@objectives.size} objectives"
   puts
@@ -29,12 +30,27 @@ def debugging
     puts "Enemy bound: #{objective.enemy_bound}"
     puts "Enemy: #{objective.enemy}"
     puts "Counted: #{objective.counted}"
+    puts
+
   end
+  puts
+end
+
+def record_action
+  @log = [] if caller[0][/`.*'/][1..-2] == 'play_turn'
+  @log << caller[0][/`.*'/][1..-2]  
+  # @log << __callee__
+end
+
+def print_log
+  puts
+  @log.each { |val| p val }
   puts
 end
 
 
 def what_warrior_hears
+  record_action
   puts
   warrior_listens.each do |sound|
     string = ''; t = ''; s = 'space'
