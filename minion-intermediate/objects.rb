@@ -3,7 +3,7 @@ Space = Struct.new(:name, :direction, :distance,
                    :enemy_bound, :enemy, :counted)
 
 def create_objects
-  record_action
+  #record_action
 
   if warrior_heard.nil?
     p "New objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

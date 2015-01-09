@@ -14,7 +14,7 @@ require 'debugging'
 class Player
 
   attr_reader :warrior, :path_traveled, :possible_objectives, :possible_directions,
-              :objectives, :warrior_heard
+              :objectives, :warrior_heard, :warrior_saw, :warrior_felt, :look_for_direction
 
   def initialize
     @possible_objectives ||= [:ticking_captive, :captive, :enemy_threat,:enemy_bound]
@@ -26,6 +26,11 @@ class Player
     @debugging if @debugging.nil?
     @log = []
     @next_objective = nil
+    @warrior_felt = {}
+    @warrior_heard = nil
+    @warrior_saw = {}
+
+
   end
 
 
@@ -44,8 +49,10 @@ class Player
 
     build_objectives
 
+
     # debugging
     # what_warrior_hears
+
 
     if objectives_accomplished
 

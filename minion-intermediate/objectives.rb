@@ -8,11 +8,10 @@ def reset_objectives
 end
 
 def build_objectives
-  record_action
+  #record_action
 
   possible_objectives.each do |objective|
     warrior_heard.each_with_index do |space, index|
-    #warrior_listens.each_with_index do |space, index|
 
       case objective
 
@@ -46,18 +45,19 @@ end
 
 def next_objective
   #record_action
-
-  objectives.first
+  @next_objective = objectives.first
 end
 
 def towards_objective
   #record_action
-
   objectives.first.direction
 end
 
 def objectives_accomplished
-  record_action if warrior.listen.size == 0
-  warrior.listen.size == 0
+  if warrior.listen.size == 0
+    record_action 
+    return true
+  end
+  false
 end
 

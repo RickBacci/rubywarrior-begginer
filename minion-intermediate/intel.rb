@@ -46,14 +46,14 @@ end
 
 
 def warrior_critical
-  record_action
+  record_action if warrior.health <= 4
 
   warrior.health <= 4
 end
 
 
 def warrior_wounded
-  record_action
+  record_action if warrior.health < 13
 
   warrior.health < 13
 end
