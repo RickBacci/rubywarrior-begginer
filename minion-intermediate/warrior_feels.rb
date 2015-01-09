@@ -58,15 +58,15 @@ end
 
 def three_front_war
 
-  total_enemies = 0
+  total_enemies2 = 0
   escape_route = false
 
   warrior_felt.each do |direction, space|
-    total_enemies += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
+    total_enemies2 += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
     escape_route = true if space.eql?('nothing')
   end
 
-  if total_enemies == 3 && escape_route == true
+  if total_enemies2 == 3 && escape_route == true
     record_action
     return true
   end
@@ -77,12 +77,12 @@ end
 def count_enemies_in_range
   record_action
 
-  total_enemies = 0
+  total_enemies2 = 0
 
   warrior_felt.each do |direction, space|
-    total_enemies += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
+    total_enemies2 += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
   end
-  total_enemies
+  total_enemies2
 end
 
 

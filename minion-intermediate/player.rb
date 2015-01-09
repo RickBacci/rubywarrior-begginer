@@ -14,7 +14,8 @@ require 'debugging'
 class Player
 
   attr_reader :warrior, :path_traveled, :possible_objectives, :possible_directions,
-              :objectives, :warrior_heard, :warrior_saw, :warrior_felt, :look_for_direction
+              :objectives, :warrior_heard, :warrior_saw, :warrior_felt, :look_for_direction#,
+              #:total_enemies, :total_captives, :captives_in_range
 
   def initialize
     @possible_objectives ||= [:ticking_captive, :captive, :enemy_threat,:enemy_bound]
@@ -29,8 +30,7 @@ class Player
     @warrior_felt = {}
     @warrior_heard = nil
     @warrior_saw = {}
-
-
+    @captives_in_range if @captives_in_range.nil?
   end
 
 
@@ -52,6 +52,7 @@ class Player
 
     # debugging
     # what_warrior_hears
+   
 
 
     if objectives_accomplished
@@ -102,7 +103,7 @@ class Player
       warrior_rest
 
     elsif warrior_critical && !one_enemy_left?
-
+      p 'in here'
       warrior_walk(direction_to_retreat)
       #warrior_retreat
 
@@ -132,7 +133,6 @@ class Player
       end
 
     else
-          p "here"
 
       walk_towards_objective
 
