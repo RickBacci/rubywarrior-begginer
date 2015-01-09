@@ -2,38 +2,38 @@
 def warrior_walk(direction)
   record_action
 
-  @warrior.walk!(direction)
-  @path_traveled << direction
+  warrior.walk!(direction)
+  path_traveled << direction
 end
 
 def rescue_captive
   record_action
 
-  @warrior.rescue!(towards_objective)
+  warrior.rescue!(towards_objective)
 end
 
 def blow_stuff_up(direction)
   record_action
 
-  @warrior.detonate!(direction)
+  warrior.detonate!(direction)
 end
 
 def attack_enemy
   record_action
 
-  @warrior.attack!(towards_objective)
+  warrior.attack!(towards_objective)
 end
 
 def warrior_rest
   record_action
 
-  @warrior.rest!
+  warrior.rest!
 end
 
 def bind_enemy(direction)
   record_action
 
-  @warrior.bind!(direction)
+  warrior.bind!(direction)
 end
 
 def walk_towards_objective

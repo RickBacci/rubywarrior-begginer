@@ -5,13 +5,13 @@ Space = Struct.new(:name, :direction, :distance,
 def create_objects
   record_action
 
-  if @warrior_hears.nil?
+  if warrior_heard.nil?
     p "New objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
-    @warrior_hears = [] 
-    @warrior.listen.size.times do
-      @warrior_hears << Space.new
+    @warrior_heard = [] 
+    warrior.listen.size.times do
+      @warrior_heard << Space.new
     end
   end
-  @warrior_hears
+  warrior_heard
 end

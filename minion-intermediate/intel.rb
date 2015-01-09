@@ -1,15 +1,8 @@
 
-# def possible_directions
-#   record_action
-
-#   [:forward, :right, :backward, :left]
-# end
-
-
 def towards_stairs
   record_action
 
-  @warrior.direction_of_stairs
+  warrior.direction_of_stairs
 end
 
 
@@ -48,21 +41,21 @@ end
 def previous_location
   record_action
 
-  retrace_footsteps(@path_traveled.last)
+  retrace_footsteps(path_traveled.last)
 end
 
 
 def warrior_critical
   record_action
 
-  @warrior.health <= 4
+  warrior.health <= 4
 end
 
 
 def warrior_wounded
   record_action
 
-  @warrior.health < 13
+  warrior.health < 13
 end
 
 

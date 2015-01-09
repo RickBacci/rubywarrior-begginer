@@ -1,12 +1,12 @@
 
 def debugging
   @debugging = true
-  puts "There are #{count_objects} objects in the room"
+  puts "There are #{@warrior.listen.size} objects in the room"
   puts "Last turn there were #{@objectives.size} objectives"
   puts
-  puts warrior_feels
+  puts @warrior_feels
   puts
-  warrior_looks.each do |direction|
+  @warrior_sees.each do |direction|
     puts "#{direction[0]} --- #{direction[1][0][0]} #{direction[1][0][1]}," << 
                           "#{direction[1][1][0]} #{direction[1][1][1]}," <<
                           "#{direction[1][2][0]} #{direction[1][2][1]}"
@@ -52,7 +52,7 @@ end
 def what_warrior_hears
   record_action
   puts
-  warrior_listens.each do |sound|
+  @warrior_hears.each do |sound|
     string = ''; t = ''; s = 'space'
 
     t = 'ticking ' if sound.ticking
