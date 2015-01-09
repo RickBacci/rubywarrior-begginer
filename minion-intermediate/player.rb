@@ -93,6 +93,7 @@ class Player
       elsif next_to_last_enemy
         attack_enemy
       else
+
         walk_towards_objective
       end
 
@@ -108,6 +109,7 @@ class Player
     elsif danger_far
 
       if path_clear
+
         walk_towards_objective
       else
         blow_stuff_up
@@ -130,6 +132,7 @@ class Player
       end
 
     else
+          p "here"
 
       walk_towards_objective
 

@@ -7,23 +7,31 @@ end
 
 
 def danger_close
-  record_action
 
-  next_objective.enemy_threat && next_objective.distance == 1
+  if next_objective.enemy_threat && next_objective.distance == 1
+    return true
+    record_action
+  end
+  false
 end
 
 
 def next_to_captive
-  record_action
-
-  next_objective.captive && next_objective.distance == 1
+  
+  if next_objective.captive && next_objective.distance == 1
+    record_action
+    return true
+  end
+  false
 end
 
 
 def danger_far
-  record_action
 
-  next_objective.enemy_threat && next_objective.distance > 1
+  if next_objective.enemy_threat && next_objective.distance > 1
+    record_action
+    return true
+  end
 end
     
 
@@ -46,23 +54,30 @@ end
 
 
 def warrior_critical
-  record_action if warrior.health <= 4
-
-  warrior.health <= 4
+  if warrior.health <= 4
+    record_action 
+    return true
+  end
+  false
 end
 
 
 def warrior_wounded
-  record_action if warrior.health < 13
-
-  warrior.health < 13
+  if warrior.health < 13
+    record_action 
+    return true
+  end
+  false
 end
 
 
 def bound_enemy_close
-  record_action
 
   unless next_objective.nil?
-    (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
+    if (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
+      record_action
+      return true
+    end
   end
+  false
 end

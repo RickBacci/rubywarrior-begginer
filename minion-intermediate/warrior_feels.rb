@@ -87,12 +87,13 @@ end
 
 
 def nowhere_to_move
-
+  spaces = 0
   warrior_felt.each do |direction, space|
-    if space == 'nothing'
-      record_action
-      return false
-    end
+    spaces += 1 if space == 'nothing'
   end
-  true
+    if spaces == 0
+      record_action
+      return true
+    end
+  false
 end

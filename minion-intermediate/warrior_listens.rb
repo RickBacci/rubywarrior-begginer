@@ -39,13 +39,15 @@ end
 
 
 def any_captives?
-
+ captives = 0
   warrior_heard.each do |square|
-    if (square.captive && !square.enemy)
+    captives += 1 if (square.captive && !square.enemy) 
+  end
+
+    if captives >= 1
       record_action
       return true 
     end
-  end
   false
 end
 

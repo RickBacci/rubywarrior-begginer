@@ -4,9 +4,9 @@ def debugging
   puts "There are #{@warrior.listen.size} objects in the room"
   puts "Last turn there were #{@objectives.size} objectives"
   puts
-  puts @warrior_feels
+  puts warrior_felt
   puts
-  @warrior_sees.each do |direction|
+  @warrior_saw.each do |direction|
     puts "#{direction[0]} --- #{direction[1][0][0]} #{direction[1][0][1]}," << 
                           "#{direction[1][1][0]} #{direction[1][1][1]}," <<
                           "#{direction[1][2][0]} #{direction[1][2][1]}"
@@ -14,12 +14,12 @@ def debugging
 
   puts
   puts 'path traveled'
-  puts @path_traveled
+  puts path_traveled
   puts
   puts "Direction to stairs: #{@warrior.direction_of_stairs}"
   puts
   puts 'objectives'
-  @objectives.each do |objective|
+  objectives.each do |objective|
     puts
     puts "Name: #{objective.name}"
     puts "Direction: #{objective.direction}"
@@ -52,7 +52,7 @@ end
 def what_warrior_hears
   record_action
   puts
-  @warrior_hears.each do |sound|
+  warrior_heard.each do |sound|
     string = ''; t = ''; s = 'space'
 
     t = 'ticking ' if sound.ticking
