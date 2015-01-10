@@ -8,6 +8,8 @@ end
 
 def danger_close
 
+  return false if next_objective.nil?
+
   if next_objective.enemy_threat && next_objective.distance == 1
     return true
     record_action
@@ -28,6 +30,8 @@ end
 
 def danger_far
 
+  return false if next_objective.nil?
+
   if next_objective.enemy_threat && next_objective.distance > 1
     record_action
     return true
@@ -36,7 +40,7 @@ end
     
 
 def retrace_footsteps(direction)
-  record_action
+  #record_action
 
   return :forward if direction == :backward
   return :backward if direction == :forward
@@ -73,11 +77,10 @@ end
 
 def bound_enemy_close
 
-  unless next_objective.nil?
-    if (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
-      record_action
-      return true
-    end
+  return false if next_objective.nil?
+
+  if (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
+    record_action
+    return true
   end
-  false
 end

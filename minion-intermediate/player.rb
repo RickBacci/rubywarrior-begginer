@@ -14,8 +14,8 @@ require 'debugging'
 class Player
 
   attr_reader :warrior, :path_traveled, :possible_objectives, :possible_directions,
-              :objectives, :warrior_heard, :warrior_saw, :warrior_felt, :look_for_direction#,
-              #:total_enemies, :total_captives, :captives_in_range
+              :objectives, :warrior_heard, :warrior_saw, :warrior_felt, :look_for_direction,
+              :total_enemies, :total_captives, :captives_in_range
 
   def initialize
     @possible_objectives ||= [:ticking_captive, :captive, :enemy_threat,:enemy_bound]
@@ -31,6 +31,10 @@ class Player
     @warrior_heard = nil
     @warrior_saw = {}
     @captives_in_range if @captives_in_range.nil?
+    @total_captives = 0
+    @total_enemies = 0
+    @distance_to_next_objective = nil
+    @objectives = []
   end
 
 
@@ -38,6 +42,8 @@ class Player
     record_action
 
     @warrior = warrior
+    @action = false
+
 
 
     reset_objectives
@@ -49,97 +55,68 @@ class Player
 
     build_objectives
 
+    #debugging
+    #what_warrior_hears
+  
+    
+    warrior_walk(towards_stairs) if objectives_accomplished
 
-    # debugging
-    # what_warrior_hears
-   
+       
+    if nowhere_to_move
 
+      rescue_captive if next_to_captive
+      bind_enemies if multiple_enemies_near?
+        
+      blow_stuff_up(towards_objective)
+    end
+      
 
-    if objectives_accomplished
+    if perfect_bomb_location
 
-      warrior_walk(towards_stairs)
-    elsif nowhere_to_move
+      warrior_rest if warrior_critical
+      blow_stuff_up(look_for_direction)
+    end
 
-      if next_to_captive
-        rescue_captive
-      elsif multiple_enemies_near?
-        bind_enemies
-      else
-        blow_stuff_up(towards_objective)
-      end
+    if any_captives?
 
-    elsif three_front_war
-
-      warrior_walk(direction_to_retreat)
-      #warrior_retreat
-
-    elsif perfect_bomb_location
-
-      if warrior_critical
-        warrior_rest
-      else
-        blow_stuff_up(look_for_direction)
-      end
-
-    elsif any_captives?
-
-      if next_objective.ticking
-        if next_to_captive
-          rescue_captive
-        else
-          walk_towards_objective
-        end
-      elsif next_to_captive
-        rescue_captive
-      elsif next_to_last_enemy
-        attack_enemy
-      else
-
-        walk_towards_objective
-      end
+      rescue_captive if next_to_captive
+      attack_enemy if next_to_last_enemy
 
     elsif warrior_wounded && safe_to_rest
 
       warrior_rest
 
     elsif warrior_critical && !one_enemy_left?
-      p 'in here'
+
       warrior_walk(direction_to_retreat)
-      #warrior_retreat
-
-    elsif danger_far
-
-      if path_clear
-
-        walk_towards_objective
-      else
-        blow_stuff_up
-      end
-
-    elsif danger_close
-
-      if multiple_enemies_near?
-        blow_stuff_up
-      else
-        attack_enemy
-      end
-
-    elsif bound_enemies?
-
-      if bound_enemy_close
-        attack_enemy
-      else
-        walk_towards_objective
-      end
-
-    else
-
-      walk_towards_objective
-
     end
+
+
+
+
+
+    if danger_far
+
+      walk_towards_objective if path_clear
+      blow_stuff_up(towards_objective)
+    end
+
+    if danger_close
+
+      blow_stuff_up(towards_objective) if multiple_enemies_near?
+      attack_enemy
+    end
+
+    if bound_enemies?
+      attack_enemy if bound_enemy_close
+    end
+
+    walk_towards_objective
+
+
 
     @warrior_health = warrior.health
 
-    print_log
+    # print_log
   end
 end

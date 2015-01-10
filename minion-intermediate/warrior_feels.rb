@@ -25,12 +25,22 @@ end
 
 def possible_paths_towards_objective
   record_action
-
+  
   possible_directions = []
   warrior_felt.each do |direction, space|
     possible_directions << direction if space == 'nothing'
   end
   possible_directions - [previous_location]
+end
+
+def alternate_direction
+  record_action
+  possible_paths_towards_objective.first
+end
+
+def path_totally_blocked
+  record_action
+  alternate_direction.nil?
 end
 
 
@@ -57,6 +67,16 @@ end
 
 
 def three_front_war
+
+  unless @distance_to_next_objective.nil?
+     if @distance_to_next_objective > next_objective.distance
+    
+      @path_blocked = true
+    end
+  end
+  
+  @distance_to_next_objective = next_objective.distance
+
 
   total_enemies2 = 0
   escape_route = false

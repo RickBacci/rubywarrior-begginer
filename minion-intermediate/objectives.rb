@@ -1,9 +1,13 @@
 
 def reset_objectives
+
   if warrior.listen.size < objectives.size
     record_action
     @warrior_heard = nil # leave instance variable
     @objectives = []     # leave instance variable
+   
+    @path_blocked = false
+   
   end
 end
 
@@ -44,20 +48,22 @@ objectives
 end
 
 def next_objective
-  #record_action
-  @next_objective = objectives.first
+  objectives.first
+end
+
+def ticking_captives?
+  next_objective.ticking
 end
 
 def towards_objective
-  #record_action
-  objectives.first.direction
+  if objectives.empty? || objectives.nil?
+    warrior.direction_of_stairs
+  else
+    objectives.first.direction
+  end
 end
 
 def objectives_accomplished
-  if warrior.listen.size == 0
-    record_action 
-    return true
-  end
-  false
+  warrior.listen.empty?
 end
 

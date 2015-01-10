@@ -1,50 +1,66 @@
 
 def warrior_walk(direction)
-  record_action
-
-  warrior.walk!(direction)
-  path_traveled << direction
+  if @action == false
+    record_action
+    warrior.walk!(direction) 
+  
+    path_traveled << direction
+  end
+  @action = true
 end
 
 def rescue_captive
-  record_action
-
-  warrior.rescue!(towards_objective)
+  if @action == false
+    record_action
+    warrior.rescue!(towards_objective)
+  end 
+  @action = true
 end
 
 def blow_stuff_up(direction)
-  record_action
-
-  warrior.detonate!(direction)
+  if @action == false
+    record_action
+    warrior.detonate!(direction)
+  end
+  @action = true
 end
 
 def attack_enemy
-  record_action
-
-  warrior.attack!(towards_objective)
+  if @action == false
+    record_action
+    warrior.attack!(towards_objective)
+  end
+  @action = true
 end
 
 def warrior_rest
-  record_action
-
-  warrior.rest!
+  if @action == false
+    record_action
+    warrior.rest!
+  end
+  @action = true
 end
 
 def bind_enemy(direction)
-  record_action
-
-  warrior.bind!(direction)
+  if @action == false
+    record_action
+    warrior.bind!(direction)
+  end 
+  @action = true
 end
 
 def walk_towards_objective
   record_action
 
   if path_clear
-    direction = towards_objective
-    warrior_walk(direction)
+    warrior_walk(towards_objective)
   else
-    direction = possible_paths_towards_objective.first
-    warrior_walk(direction)
+
+    if path_totally_blocked
+      blow_stuff_up(towards_objective) # this is for level 8
+    else
+      warrior_walk(alternate_direction)
+    end
   end
 end
 
