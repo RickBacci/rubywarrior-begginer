@@ -56,7 +56,7 @@ class Player
     build_objectives
 
     #debugging
-  
+
     
     warrior_walk(towards_stairs) if objectives_accomplished
 
