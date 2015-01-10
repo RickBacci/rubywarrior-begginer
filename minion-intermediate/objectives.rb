@@ -52,7 +52,7 @@ def next_objective
 end
 
 def ticking_captives?
-  next_objective.ticking
+  next_objective.ticking unless next_objective.nil?
 end
 
 def towards_objective

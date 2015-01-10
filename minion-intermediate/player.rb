@@ -77,22 +77,15 @@ class Player
       blow_stuff_up(look_for_direction)
     end
 
+   
     if any_captives?
 
       rescue_captive if next_to_captive
       attack_enemy if next_to_last_enemy
-
-    elsif warrior_wounded && safe_to_rest
-
-      warrior_rest
-
-    elsif warrior_critical && !one_enemy_left?
-
-      warrior_walk(direction_to_retreat)
     end
 
 
-
+    warrior_rest if (warrior_wounded && safe_to_rest) && !any_captives?
 
 
     if danger_far
@@ -101,19 +94,20 @@ class Player
       blow_stuff_up(towards_objective)
     end
 
+
     if danger_close
 
       blow_stuff_up(towards_objective) if multiple_enemies_near?
       attack_enemy
     end
 
+
     if bound_enemies?
       attack_enemy if bound_enemy_close
     end
 
+
     walk_towards_objective
-
-
 
     @warrior_health = warrior.health
 
