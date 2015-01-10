@@ -6,7 +6,7 @@ def create_objects
   #record_action
 
   if warrior_heard.nil?
-    p "New objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    #p "New objects generated !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     @warrior_heard = [] 
     warrior.listen.size.times do
       @warrior_heard << Space.new

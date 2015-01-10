@@ -1,6 +1,7 @@
 
 def debugging
   @debugging = true
+  
   puts "There are #{@warrior.listen.size} objects in the room"
   puts "Last turn there were #{@objectives.size} objectives"
   puts
@@ -44,32 +45,6 @@ end
 
 def print_log
   puts
-  @log.each { |val| p val }
+  @log.each { |val| p val } if @debugging
   puts
 end
-
-
-def what_warrior_hears
-  record_action
-  puts
-  warrior_heard.each do |sound|
-    string = ''; t = ''; s = 'space'
-
-    t = 'ticking ' if sound.ticking
-    s = 'spaces' if sound.distance > 1
-
-    string << "There is a #{t}#{sound.name} #{sound.distance} "
-    string << "#{s} #{sound.direction} --- "
-
-    if sound.captive && !sound.enemy     
-      string << "captive: #{sound.captive} ticking:#{sound.ticking}"
-    else
-      string << "threat: #{sound.enemy_threat} bound: #{sound.enemy_bound}"
-    end
-    puts string
-  end
-  puts
-end
-
-
-

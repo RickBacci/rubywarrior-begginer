@@ -56,7 +56,6 @@ class Player
     build_objectives
 
     #debugging
-    #what_warrior_hears
   
     
     warrior_walk(towards_stairs) if objectives_accomplished
