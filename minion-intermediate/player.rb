@@ -74,10 +74,11 @@ class Player
     if perfect_bomb_location
 
       warrior_rest if warrior_critical
-      blow_stuff_up(look_for_direction)
+      blow_stuff_up(look_for_direction) unless look_for_direction.nil?
+      blow_stuff_up(initial_location)
     end
 
-   
+     
     if any_captives?
 
       rescue_captive if next_to_captive
@@ -103,6 +104,11 @@ class Player
 
 
     if bound_enemies?
+      warrior_rest if warrior_critical
+
+
+      blow_stuff_up(initial_location) if multiple_bound_enemies_in_range? && (!multiple_enemies_near? && !any_captives?)
+      warrior_walk(initial_location) if !initial_location.nil? && !any_captives?
       attack_enemy if bound_enemy_close
     end
 
@@ -111,6 +117,6 @@ class Player
 
     @warrior_health = warrior.health
 
-    # print_log
+     print_log
   end
 end

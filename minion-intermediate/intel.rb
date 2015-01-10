@@ -49,6 +49,10 @@ def retrace_footsteps(direction)
   nil
 end
 
+def initial_location
+  record_action
+  retrace_footsteps(path_traveled.first)
+end
 
 def previous_location
   record_action

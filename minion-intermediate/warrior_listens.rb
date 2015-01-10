@@ -113,6 +113,24 @@ def bound_enemies?
   false
 end
 
+def multiple_bound_enemies_in_range?
+  total = 0
+  range = 0
+  in_range = false
+  warrior_heard.each do |square|
+    if (square.captive && square.enemy)
+      record_action
+      range = square.distance
+      total += 1 if range == 2
+    end
+  end
+  
+  if total > 1 #&& range == 2
+    return true
+  end
+  false
+end
+
 
 def one_enemy_left?
   
