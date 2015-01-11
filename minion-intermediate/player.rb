@@ -43,76 +43,72 @@ class Player
 
     @warrior = warrior
     @action = false
+    @path_blocked == false
 
+    @objectives = warrior_listens
 
-
-    reset_objectives
-    create_objects
-
-    warrior_listens
     warrior_looks
     warrior_feels
 
-    build_objectives
-
-    #debugging
+    debugging
 
     
     warrior_walk(towards_stairs) if objectives_accomplished
+    #walk_towards_objective if next_objective.priority == 1 && ((@action == false) && path_clear)
 
        
-    if nowhere_to_move
+    if (@action == false) && nowhere_to_move
 
-      rescue_captive if next_to_captive
-      bind_enemies if multiple_enemies_near?
+      rescue_captive if (@action == false) && next_to_captive
+      bind_enemies if (@action == false) && multiple_enemies_near?
         
-      blow_stuff_up(towards_objective)
+      blow_stuff_up(towards_objective) if (@action == false)
     end
       
 
-    if perfect_bomb_location
+    if (@action == false) && perfect_bomb_location 
 
-      warrior_rest if warrior_critical
-      blow_stuff_up(look_for_direction) unless look_for_direction.nil?
-      blow_stuff_up(initial_location)
+      warrior_rest if (@action == false) && warrior_critical
+      blow_stuff_up(look_for_direction) if (@action == false) && !look_for_direction.nil?
+      #blow_stuff_up(initial_location)
     end
 
      
-    if any_captives?
+    if (@action == false) && any_captives?
+      rescue_captive if (@action == false) && next_to_captive
+      attack_enemy if (@action == false) && next_to_last_enemy
+    end
 
-      rescue_captive if next_to_captive
-      attack_enemy if next_to_last_enemy
+    if (@action == false) && ((warrior_wounded && safe_to_rest) && !any_captives?)
+      warrior_rest
     end
 
 
-    warrior_rest if (warrior_wounded && safe_to_rest) && !any_captives?
+    if (@action == false) && danger_far
 
-
-    if danger_far
-
-      walk_towards_objective if path_clear
-      blow_stuff_up(towards_objective)
+      walk_towards_objective if (@action == false) && path_clear
+      blow_stuff_up(towards_objective) if (@action == false)
     end
 
 
-    if danger_close
+    if (@action == false) && danger_close
 
-      blow_stuff_up(towards_objective) if multiple_enemies_near?
-      attack_enemy
+      blow_stuff_up(towards_objective) if (@action == false) && multiple_enemies_near?
+      attack_enemy if (@action == false)
     end
 
 
-    if bound_enemies?
-      warrior_rest if warrior_critical
+    if (@action == false) && bound_enemies?
+      warrior_rest if (@action == false) && warrior_critical
 
 
-      blow_stuff_up(initial_location) if multiple_bound_enemies_in_range? && (!multiple_enemies_near? && !any_captives?)
-      warrior_walk(initial_location) if !initial_location.nil? && !any_captives?
-      attack_enemy if bound_enemy_close
+      #blow_stuff_up(initial_location) if multiple_bound_enemies_in_range? && (!multiple_enemies_near? && !any_captives?)
+      #warrior_walk(initial_location) if !initial_location.nil? && !any_captives?
+      attack_enemy if (@action == false) && bound_enemy_close
     end
 
 
-    walk_towards_objective
+    walk_towards_objective if (@action == false)
 
     @warrior_health = warrior.health
 

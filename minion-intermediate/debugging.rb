@@ -3,7 +3,6 @@ def debugging
   @debugging = true
   
   puts "There are #{@warrior.listen.size} objects in the room"
-  puts "Last turn there were #{@objectives.size} objectives"
   puts
   puts warrior_felt
   puts
@@ -23,6 +22,7 @@ def debugging
   objectives.each do |objective|
     puts
     puts "Name: #{objective.name}"
+    puts "Priority: #{objective.priority}"
     puts "Direction: #{objective.direction}"
     puts "Distance: #{objective.distance}"
     puts "Ticking: #{objective.ticking}"
@@ -30,7 +30,6 @@ def debugging
     puts "Captive: #{objective.captive}"
     puts "Enemy bound: #{objective.enemy_bound}"
     puts "Enemy: #{objective.enemy}"
-    puts "Counted: #{objective.counted}"
     puts
 
   end
