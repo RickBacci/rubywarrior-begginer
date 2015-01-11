@@ -8,18 +8,18 @@ def next_objective
 end
 
 def ticking_captives?
-  next_objective.ticking unless next_objective.nil?
+  next_objective.ticking
 end
 
 def towards_objective
-  if objectives.empty? || objectives.nil?
+  if objectives.empty?
     warrior.direction_of_stairs
   else
-    objectives.first.direction
+    next_objective.direction
   end
 end
 
 def objectives_accomplished
-  warrior.listen.empty?
+  objectives.empty?
 end
 

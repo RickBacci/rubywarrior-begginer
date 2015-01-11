@@ -7,7 +7,7 @@ def warrior_listens # updates values of everything in room
   @warrior_heard = []
   @multiple_bound_enemies_in_range = 0
   @bound_enemies = false
-  @multiple_enemies_near = 0
+  @multiple_enemies_next_to_warrior = 0
 
 
   warrior.listen.each_with_index do |square, index|
@@ -37,9 +37,9 @@ def warrior_listens # updates values of everything in room
 
     @total_captives += 1 if space.captive && !space.enemy
     @captives_in_range = true if distance <= 2 && (!space[:enemy] && square.captive?)
-    @multiple_bound_enemies_in_range += 1 if space[:enemy_bound] && distance == 2
+
     @bound_enemies = space[:enemy_bound]
-    @multiple_enemies_near += 1 if square.enemy? && distance == 1
+    @multiple_enemies_next_to_warrior += 1 if square.enemy? && distance == 1
 
   end
   warrior_heard.sort! { |x, y| x.priority <=> y.priority }
@@ -48,29 +48,46 @@ end
 
 def perfect_bomb_location
  
-  total_enemies2 = 0
-  escape_route = false
+  surrounded_on_three_sides? # warrior retreats to bomb
+    
+  return false if @captives_in_range == true # this needed for level 9
 
-  @warrior_felt.each do |direction, space|
-    total_enemies2 += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
-    escape_route = true if space.eql?('nothing')
-  end
+    if no_ticking_captives || path_blocked?
+       
+      if one_or_two_enemies_ahead && multiple_enemies_within_two_spaces
+        record_action
+        return true
+      end
+    end
+  false
+end
 
-  if total_enemies2 == 3 && escape_route == true
-    record_action
+def surrounded_on_three_sides?
+  if @enemies_next_to_warrior == 3 && @total_empty_spaces != 0
     @path_blocked = true
    
     warrior_walk(direction_to_retreat)
     return false
   end
-    
-  return false if @captives_in_range == true # this needed for level 9
+end
 
-  if (total_enemies > 1 && !@objectives.first.ticking) || @path_blocked == true
-      record_action
-      return true
-  end
+def no_ticking_captives
+  return false if next_objective.nil?
+  !@objectives.first.ticking
+end
+
+def path_blocked?
+  return true if @path_blocked == true
   false
+end
+
+def multiple_enemies_within_two_spaces
+  total_enemies > 1 # total enemies?
+end
+
+
+def one_or_two_enemies_ahead
+  !look_for_direction.nil?
 end
 
 
@@ -84,26 +101,9 @@ def any_captives?
 end
 
 
-def bind_enemies
-  
-  action = false
-  warrior_heard.each do |space|
-    if (space.enemy_threat && (space.direction != towards_objective)) && space.distance == 1
-      unless action
-        record_action
-        bind_enemy(space.direction)
-        space.enemy_threat = false
-        space.enemy_bound = true
-        action = true
-      end
-    end
-  end
-end
+def multiple_enemies_next_to_warrior?
 
-
-def multiple_enemies_near?
-
-    if @multiple_enemies_near > 1
+    if @multiple_enemies_next_to_warrior > 1
       record_action
       return true
     end
@@ -113,12 +113,6 @@ end
 
 def bound_enemies?
   @bound_enemies
-end
-
-def multiple_bound_enemies_in_range?
-  
-  return true if @multiple_bound_enemies_in_range > 1
-  false
 end
 
 

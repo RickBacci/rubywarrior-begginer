@@ -88,3 +88,8 @@ def bound_enemy_close
     return true
   end
 end
+
+
+def warrior_should_rest?
+  (warrior_wounded && safe_to_rest) && !any_captives?
+end

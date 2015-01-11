@@ -2,12 +2,12 @@
 def warrior_feels
   #record_action
   @enemies_next_to_warrior = 0
-  @nowhere_to_move = 0
-  @safe_to_rest = false
+  @total_empty_spaces = 0
   @possible_paths = []
   @direction_to_retreat = nil
 
-  
+  @safe_to_rest = false
+  @nowhere_to_move == false
 
   possible_directions.each do |direction|
     empty_space = false
@@ -18,13 +18,14 @@ def warrior_feels
 
     warrior_felt[direction] = square
 
-    @enemies_next_to_warrior += 1 if square.eql?('Thick Sludge') || square.eql?('Sludge')
-    @nowhere_to_move += 1 if empty_space
+    @enemies_next_to_warrior += 1 if warrior.feel(direction).enemy?
+    @total_empty_spaces += 1 if empty_space
     @possible_paths << direction if empty_space
     @direction_to_retreat ||= direction if empty_space
   end
 
   @safe_to_rest = true if @enemies_next_to_warrior == 0
+  #@nowhere_to_move == true if @total_empty_spaces == 0 # why?
 
   warrior_felt
 end
@@ -41,17 +42,14 @@ end
 
 
 def possible_paths_towards_objective
-  # record_action
   @possible_paths - [previous_location]
 end
 
 def alternate_direction
-  # record_action
   possible_paths_towards_objective.first
 end
 
 def path_totally_blocked
-  #record_action
   alternate_direction.nil?
 end
 
@@ -67,16 +65,12 @@ end
 
 
 def count_enemies_in_range
-  # record_action
   @enemies_next_to_warrior
 end
 
-
 def nowhere_to_move
-
-    if @nowhere_to_move == 0
-      record_action
-      return true
-    end
-  false
+  return false if @total_empty_spaces != 0
+  record_action
+  true
 end
+
