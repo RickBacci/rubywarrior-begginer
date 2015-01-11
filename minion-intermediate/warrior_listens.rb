@@ -27,10 +27,10 @@ def warrior_listens # updates values of everything in room
     space[:enemy_bound] = ((space[:enemy] && space[:captive]) ? true : false)
     space[:enemy_threat] = square.enemy?
 
-    space[:priority] = 1 if square.captive? && square.ticking?          # ticking captive
-    space[:priority] = 2 if square.captive? && !square.ticking?         # captive
-    space[:priority] = 3 if square.enemy?                               # enemy
-    space[:priority] = 4 if (space[:enemy] && space[:captive])          # bound enemy
+    space[:priority] = 1 if square.captive? && square.ticking?       # ticking captive
+    space[:priority] = 2 if square.captive? && !square.ticking?      # captive
+    space[:priority] = 3 if square.enemy?                            # enemy
+    space[:priority] = 4 if (space[:enemy] && space[:captive])       # bound enemy
 
     @total_captives += 1 if space.captive && !space.enemy
     @captives_in_range = true if distance <= 2 && (!space[:enemy] && square.captive?)

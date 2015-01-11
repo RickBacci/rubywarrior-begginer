@@ -1,7 +1,7 @@
 
 def warrior_looks
   #record_action
-  p @look_for_direction = nil # this is for bombing
+  @look_for_direction = nil # this is for bombing
 
   possible_directions.each do |direction|
 

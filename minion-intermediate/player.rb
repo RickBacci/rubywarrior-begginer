@@ -1,4 +1,3 @@
-require 'objects'
 require 'objectives'
 
 require 'intel'
@@ -50,7 +49,7 @@ class Player
     warrior_looks
     warrior_feels
 
-    debugging
+    #debugging
 
     
     warrior_walk(towards_stairs) if objectives_accomplished
