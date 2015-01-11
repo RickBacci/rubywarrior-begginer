@@ -30,7 +30,7 @@ end
 def attack_enemy
   if !action
     record_action
-    warrior_rest if !action && (warrior_critical && safe_to_rest)
+    #warrior_rest if !action && (warrior_critical && safe_to_rest)
 
     warrior.attack!(towards_objective) if !action
   end
@@ -82,6 +82,8 @@ def walk_towards_objective
     warrior_walk(towards_objective)
   elsif path_totally_blocked
     blow_stuff_up(towards_objective) # this is for level 8
+  elsif next_objective.distance == 1
+    # don't walk
   else
     warrior_walk(alternate_direction)
   end

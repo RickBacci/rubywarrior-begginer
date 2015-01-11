@@ -71,7 +71,7 @@ end
 
 
 def warrior_wounded
-  if warrior.health < 14
+  if warrior.health < 13
     record_action 
     return true
   end

@@ -52,53 +52,33 @@ class Player
     #debugging
     
 
-    
     warrior_walk(towards_stairs) if objectives_accomplished
        
     if nowhere_to_move
 
-      rescue_captive if !action && next_to_captive
+      rescue_captive if !action && next_to_captive # level 3
       bind_enemies if !action && multiple_enemies_next_to_warrior? # level 9
-        
-      blow_stuff_up(towards_objective) if !action
     end
       
 
-    if perfect_bomb_location 
-      blow_stuff_up(look_for_direction) if !action
-    end
+    blow_stuff_up(look_for_direction) if !action && perfect_bomb_location 
 
-     
+
     if any_captives?
       rescue_captive if !action && next_to_captive
-      attack_enemy if !action && next_to_last_enemy # level 6
     end
 
 
     warrior_rest if !action && warrior_should_rest?
       
 
-    if danger_far
-
-      walk_towards_objective if !action && path_clear
-      blow_stuff_up(towards_objective) if !action
-    end
-
-
-    if danger_close
-
-      blow_stuff_up(towards_objective) if !action && multiple_enemies_next_to_warrior?
-      attack_enemy if !action
-    end
-
-
-    if bound_enemies?
-
-      attack_enemy if !action && bound_enemy_close
-    end
-
-
     walk_towards_objective if !action
+  
+
+    attack_enemy if !action
+  
+    
+
 
     @warrior_health = warrior.health
 
