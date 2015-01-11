@@ -5,6 +5,9 @@ def warrior_listens # updates values of everything in room
   @total_captives = 0 
   @captives_in_range = false
   @warrior_heard = []
+  @multiple_bound_enemies_in_range = 0
+  @bound_enemies = false
+  @multiple_enemies_near = 0
 
 
   warrior.listen.each_with_index do |square, index|
@@ -34,9 +37,10 @@ def warrior_listens # updates values of everything in room
 
     @total_captives += 1 if space.captive && !space.enemy
     @captives_in_range = true if distance <= 2 && (!space[:enemy] && square.captive?)
+    @multiple_bound_enemies_in_range += 1 if space[:enemy_bound] && distance == 2
+    @bound_enemies = space[:enemy_bound]
+    @multiple_enemies_near += 1 if square.enemy? && distance == 1
 
-
-   
   end
   warrior_heard.sort! { |x, y| x.priority <=> y.priority }
 end
@@ -99,13 +103,7 @@ end
 
 def multiple_enemies_near?
 
-  total_enemies = 0
-
-  warrior_heard.each do |space|
-    next if space.distance != 1
-    total_enemies += 1 if space.enemy_threat
-  end
-    if total_enemies > 1
+    if @multiple_enemies_near > 1
       record_action
       return true
     end
@@ -114,31 +112,12 @@ end
 
 
 def bound_enemies?
-  
-  warrior_heard.each do |square|
-    if (square.captive && square.enemy)
-      record_action
-      return true
-    end
-  end
-  false
+  @bound_enemies
 end
 
 def multiple_bound_enemies_in_range?
-  total = 0
-  range = 0
-  in_range = false
-  warrior_heard.each do |square|
-    if (square.captive && square.enemy)
-      record_action
-      range = square.distance
-      total += 1 if range == 2
-    end
-  end
   
-  if total > 1 #&& range == 2
-    return true
-  end
+  return true if @multiple_bound_enemies_in_range > 1
   false
 end
 

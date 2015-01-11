@@ -1,14 +1,31 @@
 
 def warrior_feels
   #record_action
+  @enemies_next_to_warrior = 0
+  @nowhere_to_move = 0
+  @safe_to_rest = false
+  @possible_paths = []
+  @direction_to_retreat = nil
+
+  
 
   possible_directions.each do |direction|
+    empty_space = false
 
     square = warrior.feel(direction).to_s
     square = 'stairs' if warrior.feel(direction).stairs?
+    empty_space = true if square.eql?('nothing')
 
     warrior_felt[direction] = square
+
+    @enemies_next_to_warrior += 1 if square.eql?('Thick Sludge') || square.eql?('Sludge')
+    @nowhere_to_move += 1 if empty_space
+    @possible_paths << direction if empty_space
+    @direction_to_retreat ||= direction if empty_space
   end
+
+  @safe_to_rest = true if @enemies_next_to_warrior == 0
+
   warrior_felt
 end
 
@@ -24,17 +41,12 @@ end
 
 
 def possible_paths_towards_objective
-  record_action
-  
-  possible_directions = []
-  warrior_felt.each do |direction, space|
-    possible_directions << direction if space == 'nothing'
-  end
-  possible_directions - [previous_location]
+  # record_action
+  @possible_paths - [previous_location]
 end
 
 def alternate_direction
-  record_action
+  # record_action
   possible_paths_towards_objective.first
 end
 
@@ -45,45 +57,24 @@ end
 
 
 def safe_to_rest
-
-  if !warrior_felt.has_value?('Sludge') && !warrior_felt.has_value?('Thick Sludge')
-    record_action
-    return true
-  end
-  false
+  @safe_to_rest
 end
 
 
 def direction_to_retreat
-  
-  warrior_felt.each do |direction, space|
-    if space == 'nothing'
-      record_action
-      return direction
-    end
-  end
-  nil
+  @direction_to_retreat
 end
 
 
 def count_enemies_in_range
-  record_action
-
-  total_enemies2 = 0
-
-  warrior_felt.each do |direction, space|
-    total_enemies2 += 1 if space.eql?('Thick Sludge') || space.eql?('Sludge')
-  end
-  total_enemies2
+  # record_action
+  @enemies_next_to_warrior
 end
 
 
 def nowhere_to_move
-  spaces = 0
-  warrior_felt.each do |direction, space|
-    spaces += 1 if space == 'nothing'
-  end
-    if spaces == 0
+
+    if @nowhere_to_move == 0
       record_action
       return true
     end

@@ -12,7 +12,7 @@ require 'debugging'
 
 class Player
 
-  attr_reader :warrior, :path_traveled, :possible_objectives, :possible_directions,
+  attr_reader :warrior, :path_traveled, :possible_directions,
               :objectives, :warrior_heard, :warrior_saw, :warrior_felt, :look_for_direction,
               :total_enemies, :total_captives, :captives_in_range
 
