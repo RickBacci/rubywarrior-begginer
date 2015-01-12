@@ -1,65 +1,24 @@
 
 def towards_stairs
-  record_action
-
   warrior.direction_of_stairs
 end
 
-
-def danger_close
-
-  return false if next_objective.nil?
-
-  if next_objective.enemy_threat && next_objective.distance == 1
-    return true
-    record_action
-  end
-  false
+def walk_towards_stairs
+  warrior_walk(towards_stairs)
 end
-
-
-def next_to_captive
-  
-  if next_objective.captive && next_objective.distance == 1
-    record_action
-    return true
-  end
-  false
-end
-
-
-def danger_far
-
-  return false if next_objective.nil?
-
-  if next_objective.enemy_threat && next_objective.distance > 1
-    record_action
-    return true
-  end
-end
-    
 
 def retrace_footsteps(direction)
-  #record_action
 
-  return :forward if direction == :backward
+   return :forward if direction == :backward
   return :backward if direction == :forward
-  return :left if direction == :right
-  return :right if direction == :left
+      return :left if direction == :right
+     return :right if direction == :left
   nil
 end
 
-def initial_location
-  record_action
-  retrace_footsteps(path_traveled.first)
-end
-
 def previous_location
-  record_action
-
   retrace_footsteps(path_traveled.last)
 end
-
 
 def warrior_critical
   if warrior.health <= 4
@@ -69,7 +28,6 @@ def warrior_critical
   false
 end
 
-
 def warrior_wounded
   if warrior.health < 13
     record_action 
@@ -78,18 +36,10 @@ def warrior_wounded
   false
 end
 
-
-def bound_enemy_close
-
-  return false if next_objective.nil?
-
-  if (next_objective.enemy && next_objective.captive) && next_objective.distance == 1
-    record_action
-    return true
-  end
+def wounded_with_no_captives?
+  warrior_wounded && !any_captives? && safe_to_rest
 end
 
-
-def warrior_should_rest?
-  (warrior_wounded && safe_to_rest) && !any_captives?
+def close_to_death? # don't bother if no enemies left
+  warrior_critical && any_enemies_left? && safe_to_rest
 end

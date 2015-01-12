@@ -4,17 +4,12 @@ def debugging
   
   puts "There are #{@warrior.listen.size} objects in the room"
   puts
-  puts warrior_felt
+  puts feels
   puts
-  @warrior_saw.each do |direction|
-    puts "#{direction[0]} --- #{direction[1][0][0]} #{direction[1][0][1]}," << 
-                          "#{direction[1][1][0]} #{direction[1][1][1]}," <<
-                          "#{direction[1][2][0]} #{direction[1][2][1]}"
-  end
-
+  puts looks
   puts
   puts 'path traveled'
-  puts path_traveled
+  p path_traveled
   puts
   puts "Direction to stairs: #{@warrior.direction_of_stairs}"
   puts
@@ -30,8 +25,6 @@ def debugging
     puts "Captive: #{objective.captive}"
     puts "Enemy bound: #{objective.enemy_bound}"
     puts "Enemy: #{objective.enemy}"
-    puts
-
   end
   puts
 end
@@ -43,6 +36,7 @@ def record_action
 end
 
 def print_log
+  @log ||= []
   puts
   @log.each { |val| p val } if @debugging
   puts

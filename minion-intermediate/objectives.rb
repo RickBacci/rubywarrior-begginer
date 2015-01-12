@@ -1,7 +1,8 @@
-Space = Struct.new(:name, :direction, :distance,
-                   :ticking, :enemy_threat, :captive,
-                   :enemy_bound, :enemy, :priority)
 
+def reset_variables
+  @action = false
+  @path_blocked == false
+end
 
 def next_objective
   objectives.first
@@ -19,7 +20,10 @@ def towards_objective
   end
 end
 
-def objectives_accomplished
+def objectives_accomplished?
   objectives.empty?
 end
 
+def next_to_next_objective
+  !next_objective.nil? && next_objective.distance == 1
+end
